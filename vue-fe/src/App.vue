@@ -42,8 +42,4 @@ export default {
 </script>
 
 <style>
-.landing-link {
-  text-decoration: none;
-  color: inherit;
-}
 </style>
