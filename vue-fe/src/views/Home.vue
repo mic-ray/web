@@ -3,6 +3,10 @@
     <v-row align="center" justify="center">
       <v-col cols="auto">
         <img alt="Vue logo" src="@/assets/logo.png" />
+      </v-col>
+    </v-row>
+    <v-row align="center" justify="center">
+      <v-col cols="auto">
         <HelloWorld :name="user" />
       </v-col>
     </v-row>
