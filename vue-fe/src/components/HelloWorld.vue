@@ -1,6 +1,6 @@
 <template>
   <div id="text-center">
-    <h1>Hello {{name}}!</h1>
+    <h1>Hello {{ name }}!</h1>
   </div>
 </template>
 

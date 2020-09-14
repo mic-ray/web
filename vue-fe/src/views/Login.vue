@@ -8,7 +8,12 @@
       </v-row>
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-text-field outlined type="password" v-model="password" label="Password"></v-text-field>
+          <v-text-field
+            outlined
+            type="password"
+            v-model="password"
+            label="Password"
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
@@ -24,5 +29,4 @@
 export default {};
 </script>
 
-<style>
-</style>
+<style></style>

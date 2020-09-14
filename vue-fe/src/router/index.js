@@ -1,31 +1,31 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import Home from '@/views/Home.vue';
-import Landing from '@/views/Landing.vue';
-import Login from '@/views/Login.vue';
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "@/views/Home.vue";
+import Landing from "@/views/Landing.vue";
+import Login from "@/views/Login.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
-    {
-        path: '/',
-        name: 'Landing',
-        component: Landing,
-    },
-    {
-        path: '/home',
-        name: 'Home',
-        component: Home,
-    },
-    {
-        path: '/login',
-        name: 'Login',
-        component: Login,
-    },
+  {
+    path: "/",
+    name: "Landing",
+    component: Landing
+  },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login
+  }
 ];
 
 const router = new VueRouter({
-    routes,
+  routes
 });
 
 export default router;

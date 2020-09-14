@@ -1,11 +1,17 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-btn depressed to="/">{{title}}</v-btn>
+      <v-btn depressed to="/">{{ title }}</v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-for="(entry,i) in menuEntries" :key="i" :to="entry.route" depressed class="mx-2">
-        <v-icon class="mr-2">{{entry.icon}}</v-icon>
-        {{entry.title}}
+      <v-btn
+        v-for="(entry, i) in menuEntries"
+        :key="i"
+        :to="entry.route"
+        depressed
+        class="mx-2"
+      >
+        <v-icon class="mr-2">{{ entry.icon }}</v-icon>
+        {{ entry.title }}
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -41,5 +47,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
