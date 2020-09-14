@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-btn depressed to="/">{{ title }}</v-btn>
-      <v-spacer></v-spacer>
+      <router-link id="landing-link" tag="div" to="/">{{ title }}</router-link>
+      <v-spacer />
       <v-btn
         v-for="(entry, i) in menuEntries"
         :key="i"
@@ -15,7 +15,7 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-      <router-view></router-view>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -47,4 +47,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+#landing-link {
+  cursor: pointer;
+}
+</style>

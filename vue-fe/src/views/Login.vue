@@ -1,24 +1,32 @@
 <template>
   <v-container>
-    <v-form>
+    <v-form v-model="valid">
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-text-field outlined v-model="email" label="E-mail"></v-text-field>
+          <v-text-field
+            v-model="email"
+            :rules="[v => !!v || 'E-Mail is required!']"
+            outlined
+            label="E-Mail"
+            required
+          />
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
         <v-col cols="auto">
           <v-text-field
+            v-model="password"
+            :rules="[v => !!v || 'Password is required!']"
             outlined
             type="password"
-            v-model="password"
             label="Password"
-          ></v-text-field>
+            required
+          />
         </v-col>
       </v-row>
       <v-row align="center" justify="center">
         <v-col cols="auto">
-          <v-btn>Login</v-btn>
+          <v-btn :disabled="!valid">Login</v-btn>
         </v-col>
       </v-row>
     </v-form>
@@ -26,7 +34,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: () => ({
+    email: null,
+    password: null,
+    valid: false
+  })
+};
 </script>
 
 <style></style>
