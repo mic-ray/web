@@ -15,7 +15,9 @@
       </v-btn>
     </v-app-bar>
     <v-main>
-      <router-view />
+      <v-container fluid class="d-flex justify-center">
+        <router-view />
+      </v-container>
     </v-main>
   </v-app>
 </template>

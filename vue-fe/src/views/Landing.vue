@@ -7,11 +7,13 @@
     </v-row>
     <v-row align="center" justify="center">
       <v-col cols="auto">
-        <v-btn to="/login" class="mx-2">
+        <v-btn to="/login?mode=login" class="mx-2">
           Login
         </v-btn>
-        <v-btn to="/signup" class="mx-2">
-          Sign up
+      </v-col>
+      <v-col cols="auto">
+        <v-btn to="/login?mode=signup" class="mx-2">
+          Signup
         </v-btn>
       </v-col>
     </v-row>

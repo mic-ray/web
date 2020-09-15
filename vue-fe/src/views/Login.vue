@@ -1,45 +1,38 @@
 <template>
-  <v-container>
-    <v-form v-model="valid">
-      <v-row align="center" justify="center">
-        <v-col cols="auto">
-          <v-text-field
-            v-model="email"
-            :rules="[v => !!v || 'E-Mail is required!']"
-            outlined
-            label="E-Mail"
-            required
-          />
-        </v-col>
-      </v-row>
-      <v-row align="center" justify="center">
-        <v-col cols="auto">
-          <v-text-field
-            v-model="password"
-            :rules="[v => !!v || 'Password is required!']"
-            outlined
-            type="password"
-            label="Password"
-            required
-          />
-        </v-col>
-      </v-row>
-      <v-row align="center" justify="center">
-        <v-col cols="auto">
-          <v-btn :disabled="!valid">Login</v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+  <v-tabs v-model="mode" centered>
+    <v-tab href="#login">
+      Login
+    </v-tab>
+    <v-tab href="#signup">
+      Signup
+    </v-tab>
+    <v-tabs-items :value="mode">
+      <v-tab-item value="login"><LoginForm /></v-tab-item>
+      <v-tab-item value="signup"><SignupForm /></v-tab-item>
+    </v-tabs-items>
+  </v-tabs>
 </template>
 
 <script>
+import LoginForm from "@/components/LoginForm";
+import SignupForm from "@/components/SignupForm";
 export default {
-  data: () => ({
-    email: null,
-    password: null,
-    valid: false
-  })
+  components: {
+    LoginForm,
+    SignupForm
+  },
+  // Set the current route depending on the selected mode
+  computed: {
+    mode: {
+      set(mode) {
+        this.$router.replace({ query: { ...this.$route.query, mode } });
+      },
+      get() {
+        return this.$route.query.mode;
+      }
+    }
+  },
+  data: () => ({})
 };
 </script>
 
