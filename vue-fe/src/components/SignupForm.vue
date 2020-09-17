@@ -2,20 +2,14 @@
   <v-form v-model="valid">
     <v-row justify="center">
       <v-col cols="auto">
-        <v-text-field
-          v-model="email"
-          :rules="[v => !!v || 'E-Mail is required!']"
-          outlined
-          label="E-Mail"
-          required
-        />
+        <v-text-field v-model="email" :rules="emailRules" outlined label="E-Mail" required />
       </v-col>
     </v-row>
     <v-row justify="center">
       <v-col cols="auto">
         <v-text-field
           v-model="password"
-          :rules="[v => !!v || 'Password is required!']"
+          :rules="passwordRules"
           outlined
           type="password"
           label="Password"
@@ -27,7 +21,7 @@
       <v-col cols="auto">
         <v-text-field
           v-model="passwordConfirm"
-          :rules="[v => !!v || 'Confirm your password!']"
+          :rules="[(password === passwordConfirm) ||'Passwords don\'t match!']"
           outlined
           type="password"
           label="Repeat Password"
@@ -47,7 +41,15 @@
 export default {
   data: () => ({
     email: null,
+    emailRules: [
+      v => !!v || "E-Mail is required!",
+      v => (v && /^.+@[a-z]+\.[a-z]+/.test(v)) || "E-Mail isn't valid!"
+    ],
     password: null,
+    passwordRules: [
+      v => !!v || "Password is required!",
+      v => (v && v.length >= 8) || "Use atleast 8 characters!"
+    ],
     passwordConfirm: null,
     valid: false
   })
