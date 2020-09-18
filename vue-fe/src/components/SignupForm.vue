@@ -2,7 +2,13 @@
   <v-form v-model="valid">
     <v-row justify="center">
       <v-col cols="auto">
-        <v-text-field v-model="email" :rules="emailRules" outlined label="E-Mail" required />
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          outlined
+          label="E-Mail"
+          required
+        />
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -21,7 +27,7 @@
       <v-col cols="auto">
         <v-text-field
           v-model="passwordConfirm"
-          :rules="[(password === passwordConfirm) ||'Passwords don\'t match!']"
+          :rules="[password === passwordConfirm || 'Passwords don\'t match!']"
           outlined
           type="password"
           label="Repeat Password"
@@ -31,7 +37,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="auto">
-        <v-btn :disabled="!valid">Signup</v-btn>
+        <v-btn type="submit" :disabled="!valid">Signup</v-btn>
       </v-col>
     </v-row>
   </v-form>

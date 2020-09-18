@@ -2,7 +2,13 @@
   <v-form v-model="valid">
     <v-row justify="center">
       <v-col cols="auto">
-        <v-text-field v-model="email" :rules="emailRules" outlined label="E-Mail" required />
+        <v-text-field
+          v-model="email"
+          :rules="emailRules"
+          outlined
+          label="E-Mail"
+          required
+        />
       </v-col>
     </v-row>
     <v-row justify="center">
@@ -19,7 +25,7 @@
     </v-row>
     <v-row justify="center">
       <v-col cols="auto">
-        <v-btn :disabled="!valid">Login</v-btn>
+        <v-btn type="submit" :disabled="!valid">Login</v-btn>
       </v-col>
     </v-row>
   </v-form>
