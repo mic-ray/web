@@ -1,14 +1,14 @@
 <template>
   <v-tabs v-model="mode" centered>
-    <v-tab href="#login">
-      Login
-    </v-tab>
-    <v-tab href="#signup">
-      Signup
-    </v-tab>
+    <v-tab href="#login">Login</v-tab>
+    <v-tab href="#signup">Signup</v-tab>
     <v-tabs-items :value="mode">
-      <v-tab-item value="login"><LoginForm /></v-tab-item>
-      <v-tab-item value="signup"><SignupForm /></v-tab-item>
+      <v-tab-item value="login">
+        <LoginForm />
+      </v-tab-item>
+      <v-tab-item value="signup">
+        <SignupForm />
+      </v-tab-item>
     </v-tabs-items>
   </v-tabs>
 </template>

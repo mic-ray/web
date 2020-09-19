@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid">
+  <v-form @submit.prevent="login" v-model="valid">
     <v-row justify="center">
       <v-col cols="auto">
         <v-text-field
@@ -28,6 +28,11 @@
         <v-btn type="submit" :disabled="!valid">Login</v-btn>
       </v-col>
     </v-row>
+    <v-row justify="center">
+      <v-banner v-if="authStatus">
+        {{ authStatus }}
+      </v-banner>
+    </v-row>
   </v-form>
 </template>
 
@@ -45,7 +50,20 @@ export default {
       v => (v && v.length >= 8) || "Use atleast 8 characters!"
     ],
     valid: false
-  })
+  }),
+  computed: {
+    authStatus() {
+      return this.$store.getters.getAuthStatus;
+    }
+  },
+  methods: {
+    login() {
+      this.$store.dispatch("login", {
+        email: this.email,
+        password: this.password
+      });
+    }
+  }
 };
 </script>
 

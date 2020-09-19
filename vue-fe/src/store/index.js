@@ -7,17 +7,33 @@ axios.defaults.baseURL = "http://localhost:5000/";
 
 export default new Vuex.Store({
   state: {
-    info: "Default info!"
+    info: "",
+    authStatus: null
   },
   mutations: {
     setInfo: (state, data) => {
       state.info = data;
+    },
+    setAuthStatus: (state, data) => {
+      console.log(data);
+      state.authStatus = data;
     }
   },
   getters: {
-    getInfo: state => state.info
+    getInfo: state => state.info,
+    getAuthStatus: state => state.authStatus
   },
   actions: {
+    login(state, credentials) {
+      axios
+        .post("/auth/login", credentials)
+        .then(response => {
+          state.commit("setAuthStatus", response.data.message);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     getInfo(state) {
       axios
         .get("/info")
