@@ -21,8 +21,23 @@ app.use("/info", infoRoutes);
 const { authRoutes } = require("./routes/auth");
 app.use("/auth", authRoutes);
 
-app.use((req, res) => {
-  return res.status(404).send("<h1>Nothing found<h1>");
+// If no route has matched
+app.use((req, res, next) => {
+  const error = new Error("Not found!");
+  error.status = 404;
+  next(error);
+});
+
+// Error handler
+app.use((error, req, res) => {
+  res.status(error.status || 500);
+  res.json({
+    result: "An error occured!",
+    error: {
+      message: error.message,
+      status: error.status
+    }
+  });
 });
 
 module.exports = app;
