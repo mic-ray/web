@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 
 Vue.use(Vuex);
-axios.defaults.baseURL = "http://localhost:5000/";
+axios.defaults.baseURL = "http://localhost:3000/";
 
 export default new Vuex.Store({
   state: {
@@ -15,7 +15,6 @@ export default new Vuex.Store({
       state.info = data;
     },
     setAuthStatus: (state, data) => {
-      console.log(data);
       state.authStatus = data;
     }
   },
@@ -27,6 +26,16 @@ export default new Vuex.Store({
     login(state, credentials) {
       axios
         .post("/auth/login", credentials)
+        .then(response => {
+          state.commit("setAuthStatus", response.data.message);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    signup(state, credentials) {
+      axios
+        .post("/auth/signup", credentials)
         .then(response => {
           state.commit("setAuthStatus", response.data.message);
         })
