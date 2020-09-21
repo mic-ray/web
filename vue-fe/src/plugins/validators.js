@@ -4,7 +4,8 @@ import { required, email, min } from "vee-validate/dist/rules";
 extend("email", email);
 extend("min", {
   ...min,
-  message: `{_field_} has to be at least 8 characters`
+  params: ["length"],
+  message: `{_field_} has to be at least {length} characters long`
 });
 extend("required", {
   ...required,

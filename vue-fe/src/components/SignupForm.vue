@@ -1,18 +1,19 @@
 <template>
-  <ValidationObserver>
-    <v-form @submit.prevent v-model="valid">
+  <ValidationObserver ref="form">
+    <v-form @submit.prevent="handleSubmit">
       <v-row justify="center" v-for="(field, i) in formFields" :key="i">
         <v-col cols="auto">
           <ValidationProvider
             :name="field.label"
             :rules="field.rules.join('|')"
-            v-slot="{ errors }"
+            v-slot="{ errors, valid, touched, pristine, failed }"
           >
             <v-text-field
               v-model="field.model"
               :type="field.type"
               :label="field.label"
-              :error-messages="errors"
+              :error-messages="touched || (pristine && failed) ? errors : null"
+              :success="!pristine && valid"
               required
               outlined
             />
@@ -21,7 +22,7 @@
       </v-row>
       <v-row justify="center">
         <v-col cols="auto">
-          <v-btn type="submit" :disabled="!valid">Signup</v-btn>
+          <v-btn type="submit">Signup</v-btn>
         </v-col>
       </v-row>
     </v-form>
@@ -40,8 +41,7 @@ export default {
   data: () => ({
     email: null,
     password: null,
-    passwordConfirm: null,
-    valid: false
+    passwordConfirm: null
   }),
   computed: {
     formFields() {
@@ -60,11 +60,18 @@ export default {
         },
         {
           model: this.passwordConfirm,
-          rules: ["passwordMatch:@Password"],
+          rules: ["required", "passwordMatch:@Password"],
           type: "password",
           label: "Confirm Password"
         }
       ];
+    }
+  },
+  methods: {
+    handleSubmit() {
+      this.$refs.form.validate().then(success => {
+        if (!success) return;
+      });
     }
   }
 };

@@ -36,4 +36,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+::v-deep .v-text-field {
+  width: 300px;
+}
+</style>
