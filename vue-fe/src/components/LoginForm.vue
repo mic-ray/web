@@ -2,7 +2,7 @@
   <div>
     <ValidationObserver ref="form">
       <v-form @submit.prevent="handleSubmit">
-        <v-row justify="center" v-for="(field, i) in formFields()" :key="i">
+        <v-row justify="center" v-for="(field, i) in formFields" :key="i">
           <v-col cols="auto">
             <ValidationProvider
               :name="field.label"
