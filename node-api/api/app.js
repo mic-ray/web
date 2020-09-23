@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const DBService = require("./services/db.service");
 
 // Setup body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,6 +16,9 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+// Establish database connection
+DBService.connect();
 
 const { infoRoutes } = require("./routes/info");
 app.use("/info", infoRoutes);
@@ -35,7 +39,7 @@ app.use((error, req, res, next) => {
     result: "An error occured!",
     error: {
       message: error.message,
-      status: error.status
+      status: error.status || 500
     }
   });
 });

@@ -27,8 +27,14 @@ exports.auth_signup = (req, res, next) => {
     error.status = 401;
     return next(error);
   }
-  console.log(credentials);
-  return res.status(200).json({
-    result: "Signup successful!"
+
+  AuthService.signup(credentials, result => {
+    if (result instanceof Error) {
+      return next(result);
+    }
+    return res.status(200).json({
+      result: "Signup successful!",
+      token: result
+    });
   });
 };
