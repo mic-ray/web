@@ -1,8 +1,10 @@
 import AuthService from "@/services/auth.service";
+import router from "@/router";
 
 const auth = {
   state: {
-    authStatus: null
+    authStatus: null,
+    token: AuthService.getToken()
   },
 
   getters: {
@@ -11,27 +13,32 @@ const auth = {
   mutations: {
     setAuthStatus: (state, data) => {
       state.authStatus = data;
+    },
+    setToken: (state, token) => {
+      AuthService.setToken(token);
+      state.token = AuthService.getToken();
     }
   },
 
   actions: {
-    login(state, credentials) {
-      AuthService.login(credentials)
-        .then(response => {
-          state.commit("setAuthStatus", response.message);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    login({ commit }, credentials) {
+      AuthService.login(credentials).then(
+        response => {
+          commit("setAuthStatus", response.data.result);
+          commit("setToken", response.data.token);
+        },
+        err => commit("setAuthStatus", err.response.data.error.message)
+      );
     },
-    signup(state, credentials) {
-      AuthService.signup(credentials)
-        .then(response => {
-          state.commit("setAuthStatus", response.message);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    signup({ commit }, credentials) {
+      AuthService.signup(credentials).then(
+        response => {
+          commit("setAuthStatus", response.data.result);
+          commit("setToken", response.data.token);
+          router.push("/home");
+        },
+        err => commit("setAuthStatus", err.response.data.error.message)
+      );
     }
   }
 };
