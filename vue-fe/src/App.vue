@@ -4,8 +4,8 @@
       <router-link id="landing-link" tag="div" to="/">{{ title }}</router-link>
       <v-spacer />
       <v-btn
-        v-for="(entry, i) in menuEntries"
-        :key="i"
+        v-for="entry in menuEntries"
+        :key="entry"
         :to="entry.route"
         depressed
         class="mx-2"
@@ -26,26 +26,36 @@
 export default {
   name: "App",
   data: () => ({
-    title: "WebApp",
-    menuEntries: [
-      {
-        route: "/home",
-        icon: "mdi-home",
-        title: "Home"
-      },
-      {
-        route: "/login",
-        icon: "mdi-account",
-        title: "Login"
-      },
+    title: "WebApp"
+  }),
+  computed: {
+    isAuthenticated() {
+      return !!this.$store.getters.getToken;
+    },
+    menuEntries() {
+      return [
+        {
+          route: "/home",
+          icon: "mdi-home",
+          title: "Home",
+          display: this.isAuthenticated
+        },
+        {
+          route: "/login",
+          icon: "mdi-account",
+          title: "Login",
+          display: !this.isAuthenticated
+        },
 
-      {
-        route: "/logout",
-        icon: "mdi-logout",
-        title: "Logout"
-      }
-    ]
-  })
+        {
+          route: "/logout",
+          icon: "mdi-logout",
+          title: "Logout",
+          display: this.isAuthenticated
+        }
+      ].filter(x => x.display);
+    }
+  }
 };
 </script>
 

@@ -8,7 +8,8 @@ const auth = {
   },
 
   getters: {
-    getAuthStatus: state => state.authStatus
+    getAuthStatus: state => state.authStatus,
+    getToken: state => state.token
   },
   mutations: {
     setAuthStatus: (state, data) => {
