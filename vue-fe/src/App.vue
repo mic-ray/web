@@ -5,7 +5,7 @@
       <v-spacer />
       <v-btn
         v-for="entry in menuEntries"
-        :key="entry"
+        :key="entry.route"
         :to="entry.route"
         depressed
         class="mx-2"

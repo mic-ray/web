@@ -1,5 +1,4 @@
 import AuthService from "@/services/auth.service";
-import router from "@/router";
 
 const auth = {
   state: {
@@ -32,14 +31,19 @@ const auth = {
       );
     },
     signup({ commit }, credentials) {
-      AuthService.signup(credentials).then(
-        response => {
-          commit("setAuthStatus", response.data.result);
-          commit("setToken", response.data.token);
-          router.push("/home");
-        },
-        err => commit("setAuthStatus", err.response.data.error.message)
-      );
+      return new Promise((resolve, reject) => {
+        AuthService.signup(credentials).then(
+          response => {
+            commit("setAuthStatus", response.data.result);
+            commit("setToken", response.data.token);
+            resolve();
+          },
+          err => {
+            commit("setAuthStatus", err.response.data.error.message);
+            reject();
+          }
+        );
+      });
     }
   }
 };

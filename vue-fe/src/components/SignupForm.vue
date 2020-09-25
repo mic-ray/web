@@ -91,11 +91,15 @@ export default {
       });
     },
     signup() {
-      this.$store.dispatch("signup", {
-        email: this.models.email,
-        password: this.models.password
-      });
-      this.snackbar = true;
+      this.$store
+        .dispatch("signup", {
+          email: this.models.email,
+          password: this.models.password
+        })
+        .then(
+          () => this.$router.push("/home"),
+          () => (this.snackbar = true)
+        );
     }
   }
 };
