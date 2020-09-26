@@ -28,3 +28,7 @@ exports.addUser = userData => {
   // Save the created document and return the promise
   return user.save();
 };
+
+exports.findUser = userEmail => {
+  return User.find({ email: userEmail }).exec();
+};

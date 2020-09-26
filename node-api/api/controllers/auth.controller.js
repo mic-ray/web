@@ -17,13 +17,16 @@ exports.auth_signup = (req, res, next) => {
     email: req.body.email,
     password: req.body.password
   };
-  AuthService.signup(credentials, result => {
-    if (result instanceof Error) {
-      return next(result);
+
+  AuthService.signup(credentials).then(
+    result => {
+      return res.status(200).json({
+        result: "Signup successful!",
+        token: result
+      });
+    },
+    err => {
+      return next(err);
     }
-    return res.status(200).json({
-      result: "Signup successful!",
-      token: result
-    });
-  });
+  );
 };
