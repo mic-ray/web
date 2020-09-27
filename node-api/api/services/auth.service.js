@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const DBService = require("../services/db.service");
+const { ApiError } = require("../utils/error");
 
 /**
  * Generates a JWT
@@ -25,7 +26,7 @@ exports.signup = credentials => {
     DBService.findUser(credentials.email).then(res => {
       // If a user is found reject
       if (res.length > 0) {
-        reject(new Error("E-Mail is already in use"));
+        reject(new ApiError("E-Mail is already taken", 400));
       } else {
         bcrypt
           .hash(credentials.password, 12)

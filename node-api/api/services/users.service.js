@@ -1,4 +1,5 @@
 const DBService = require("../services/db.service");
+const { ApiError } = require("../utils/error");
 
 exports.getUserByEmail = email => {
   return new Promise((resolve, reject) => {
@@ -9,7 +10,7 @@ exports.getUserByEmail = email => {
         resolve({ id: res[0]._id, email: res[0].email });
       } else {
         // Else reject
-        reject(new Error("No user found with that E-Mail"));
+        reject(new ApiError("No user found with that E-Mail", 404));
       }
     });
   });
@@ -22,7 +23,7 @@ exports.checkEmail = email => {
       // If a user with that email is found
       // reject with a
       if (res.length > 0) {
-        reject(new Error("E-Mail is already in use"));
+        reject(new ApiError("E-Mail is already taken", 409));
       } else {
         // Else resolve
         resolve();

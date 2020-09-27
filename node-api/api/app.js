@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const DBService = require("./services/db.service");
+const { ApiError } = require("./utils/error");
 
 // Setup body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,19 +30,17 @@ app.use("/users", usersRoutes);
 
 // If no route has matched
 app.use((req, res, next) => {
-  const error = new Error("Not found!");
-  error.status = 404;
-  next(error);
+  next(new ApiError("Not found!", 404));
 });
 
 // Error handler
 app.use((error, req, res, next) => {
-  res.status(error.status || 500);
+  res.status(error.statusCode || 500);
   res.json({
     result: "An error occured!",
     error: {
       message: error.message,
-      status: error.status || 500
+      status: error.statusCode || 500
     }
   });
 });
