@@ -1,5 +1,4 @@
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:3000/auth";
+import api from "@/utils/api";
 
 class AuthService {
   setToken(token) {
@@ -9,10 +8,10 @@ class AuthService {
     return localStorage.getItem("token") || null;
   }
   login(credentials) {
-    return axios.post("/login", credentials);
+    return api.post("/auth/login", credentials);
   }
   signup(credentials) {
-    return axios.post("/signup", credentials);
+    return api.post("/auth/signup", credentials);
   }
 }
 

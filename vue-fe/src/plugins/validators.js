@@ -1,5 +1,8 @@
-import { extend } from "vee-validate";
+import { extend, setInteractionMode } from "vee-validate";
 import { required, email, min } from "vee-validate/dist/rules";
+import api from "@/utils/api";
+
+setInteractionMode("eager");
 
 extend("email", email);
 extend("min", {
@@ -17,4 +20,13 @@ extend("passwordMatch", {
     return value === target;
   },
   message: "Passwords don't match"
+});
+extend("emailAvailable", {
+  validate(value) {
+    return api.get("users/check/" + value).then(
+      () => true,
+      () => false
+    );
+  },
+  message: "E-Mail is already used"
 });
