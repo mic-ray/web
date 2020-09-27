@@ -9,4 +9,10 @@ router.get(
   UsersController.user_email
 );
 
+router.get(
+  "/check/:email",
+  ValidationGuard.validateEmail,
+  UsersController.user_check_email
+);
+
 module.exports = { usersRoutes: router };

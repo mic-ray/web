@@ -13,3 +13,17 @@ exports.user_email = (req, res, next) => {
     err => next(err)
   );
 };
+
+exports.user_check_email = (req, res, next) => {
+  const email = req.params.email;
+
+  UsersService.checkEmail(email).then(
+    () => {
+      return res.status(200).json({
+        result: "E-Mail available!",
+        email: email
+      });
+    },
+    err => next(err)
+  );
+};
