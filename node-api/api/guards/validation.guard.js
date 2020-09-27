@@ -12,3 +12,13 @@ exports.validateCredentials = (req, res, next) => {
   }
   next();
 };
+
+exports.validateEmail = (req, res, next) => {
+  const validationError = ValidationService.validateEmail(req.params.email);
+  if (validationError) {
+    const error = new Error(validationError);
+    error.status = 400;
+    return next(error);
+  }
+  next();
+};

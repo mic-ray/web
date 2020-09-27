@@ -10,3 +10,8 @@ exports.validateCredentials = credentials =>
   credentialsSchema.validate(credentials).error
     ? credentialsSchema.validate(credentials).error.message
     : null;
+
+exports.validateEmail = email =>
+  Joi.string().email().required().validate(email).error
+    ? Joi.string().email().required().validate(email).error.message
+    : null;
