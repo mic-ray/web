@@ -7,16 +7,13 @@
             <ValidationProvider
               :name="field.label"
               :rules="field.rules.join('|')"
-              v-slot="{ errors, valid, touched, pristine, failed }"
+              v-slot="{ errors }"
             >
               <v-text-field
                 v-model="models[field.model]"
                 :type="field.type"
                 :label="field.label"
-                :error-messages="
-                  touched || (pristine && failed) ? errors : null
-                "
-                :success="!pristine && valid"
+                :error-messages="errors"
                 required
                 outlined
               />
@@ -84,11 +81,15 @@ export default {
       });
     },
     login() {
-      this.$store.dispatch("login", {
-        email: this.models.email,
-        password: this.models.password
-      });
-      this.snackbar = true;
+      this.$store
+        .dispatch("login", {
+          email: this.models.email,
+          password: this.models.password
+        })
+        .then(
+          () => this.$router.push("/home"),
+          () => (this.snackbar = true)
+        );
     }
   }
 };

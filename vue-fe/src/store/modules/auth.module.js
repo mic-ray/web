@@ -22,13 +22,19 @@ const auth = {
 
   actions: {
     login({ commit }, credentials) {
-      AuthService.login(credentials).then(
-        response => {
-          commit("setAuthStatus", response.data.result);
-          commit("setToken", response.data.token);
-        },
-        err => commit("setAuthStatus", err.response.data.error.message)
-      );
+      return new Promise((resolve, reject) => {
+        AuthService.login(credentials).then(
+          response => {
+            commit("setAuthStatus", response.data.result);
+            commit("setToken", response.data.token);
+            resolve();
+          },
+          err => {
+            commit("setAuthStatus", err.response.data.error.message);
+            reject();
+          }
+        );
+      });
     },
     signup({ commit }, credentials) {
       return new Promise((resolve, reject) => {
