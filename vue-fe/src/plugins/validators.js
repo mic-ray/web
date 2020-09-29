@@ -1,10 +1,15 @@
 import { extend, setInteractionMode } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required, min } from "vee-validate/dist/rules";
 import api from "@/utils/api";
 
 setInteractionMode("eager");
 
-extend("email", email);
+extend("email", {
+  validate(value) {
+    return /[^@]+@.+\.[a-z]+/.test(value);
+  },
+  message: "{_field_} is not valid"
+});
 extend("min", {
   ...min,
   params: ["length"],
@@ -25,7 +30,12 @@ extend("emailAvailable", {
   validate(value) {
     return api.get("users/check/" + value).then(
       () => true,
-      () => false
+      err => {
+        // Only return false, if the status
+        // represents a conflict
+        if (err.response.status === 409) return false;
+        return true;
+      }
     );
   },
   message: "E-Mail is already used"

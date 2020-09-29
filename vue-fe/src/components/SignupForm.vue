@@ -6,6 +6,7 @@
           <v-col cols="auto">
             <ValidationProvider
               :name="field.label"
+              :vid="field.model"
               :rules="field.rules.join('|')"
               v-slot="{ errors }"
             >
@@ -63,7 +64,7 @@ export default {
       },
       {
         model: "passwordConfirm",
-        rules: ["required", "passwordMatch:@Password"],
+        rules: ["required", "passwordMatch:@password"],
         type: "password",
         label: "Confirm Password"
       }
@@ -95,7 +96,13 @@ export default {
         })
         .then(
           () => this.$router.push("/home"),
-          () => (this.snackbar = true)
+          err => {
+            if (err) {
+              this.$refs.form.setErrors(err);
+            } else {
+              this.snackbar = true;
+            }
+          }
         );
     }
   }

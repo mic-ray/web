@@ -45,8 +45,12 @@ const auth = {
             resolve();
           },
           err => {
-            commit("setAuthStatus", err.response.data.error.message);
-            reject();
+            if (err.response.status === 400) {
+              reject(err.response.data.dataErrors);
+            } else {
+              commit("setAuthStatus", err.response.data.error.message);
+              reject();
+            }
           }
         );
       });
