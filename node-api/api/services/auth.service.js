@@ -22,21 +22,15 @@ exports.login = credentials => {
           return reject(new ApiError("Wrong E-Mail provided", 401));
         }
         // Otherwise compare the passwords
-        bcrypt.compare(
-          credentials.password,
-          res[0].password,
-          (error, success) => {
-            // If passwords are not equal reject
-            if (error) {
-              reject(new ApiError("Wrong Password provided", 401));
-              // Otherwise resolve with a JWT
-            } else if (success) {
-              resolve(
-                generateToken({ email: res[0].email, userId: res[0]._id })
-              );
-            }
-          }
-        );
+        bcrypt.compare(credentials.password, res[0].password, (_, success) => {
+          // If passwords are equal resolve with a JWT
+          if (success) {
+            return resolve(
+              generateToken({ email: res[0].email, userId: res[0]._id })
+            );
+            // Else reject with an error
+          } else return reject(new ApiError("Wrong Password provided", 401));
+        });
       })
       // Reject in case an error was catched
       .catch(err => reject(new Error(err.message)));
@@ -56,7 +50,7 @@ exports.signup = credentials => {
         reject(new ApiError("E-Mail is already taken", 409));
       } else {
         bcrypt
-          .hash(credentials.password, 10)
+          .hash(credentials.password, 12)
           // Create a new user with the password hash and provided email
           .then(hash =>
             DBService.addUser({ email: credentials.email, password: hash })
