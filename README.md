@@ -8,3 +8,8 @@ Mostly for experimental and learning purposes.
 ## Node.js API
 
 Basic Node.js API using Express
+
+
+## Vue Frontend
+
+Vue Frontend client, that uses Vuetify, vuex and more 
