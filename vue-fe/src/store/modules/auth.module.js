@@ -3,7 +3,7 @@ import AuthService from "@/services/auth.service";
 const auth = {
   state: {
     authStatus: null,
-    token: AuthService.getToken()
+    token: localStorage.getItem("token") || null
   },
 
   getters: {
@@ -15,8 +15,12 @@ const auth = {
       state.authStatus = data;
     },
     setToken: (state, token) => {
-      AuthService.setToken(token);
-      state.token = AuthService.getToken();
+      localStorage.setItem("token", token);
+      state.token = token;
+    },
+    logout: state => {
+      localStorage.removeItem("token");
+      state.token = null;
     }
   },
 

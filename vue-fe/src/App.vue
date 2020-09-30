@@ -7,6 +7,7 @@
         v-for="entry in menuEntries"
         :key="entry.route"
         :to="entry.route"
+        v-on="entry.function ? { click: entry.function } : {}"
         depressed
         class="mx-2"
       >
@@ -46,14 +47,19 @@ export default {
           title: "Login",
           display: !this.isAuthenticated
         },
-
         {
-          route: "/logout",
+          route: "/login",
           icon: "mdi-logout",
           title: "Logout",
-          display: this.isAuthenticated
+          display: this.isAuthenticated,
+          function: this.logout
         }
       ].filter(x => x.display);
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.commit("logout");
     }
   }
 };
