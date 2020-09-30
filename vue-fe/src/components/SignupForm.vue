@@ -1,5 +1,12 @@
 <template>
   <div>
+    <v-row justify="center">
+      <v-col cols="auto">
+        <v-alert v-if="alertError.active" dismissible outlined type="error">
+          {{ alertError.message }}
+        </v-alert>
+      </v-col>
+    </v-row>
     <ValidationObserver ref="form">
       <v-form @submit.prevent="handleSubmit">
         <v-row justify="center" v-for="(field, i) in formFields" :key="i">
@@ -21,6 +28,7 @@
             </ValidationProvider>
           </v-col>
         </v-row>
+
         <v-row justify="center">
           <v-col cols="auto">
             <v-btn type="submit">Signup</v-btn>
@@ -28,14 +36,6 @@
         </v-row>
       </v-form>
     </ValidationObserver>
-    <v-snackbar v-model="snackbar">
-      {{ authStatus }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false"
-          >Close</v-btn
-        >
-      </template>
-    </v-snackbar>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
     formFields: [
       {
         model: "email",
-        rules: ["required", "email", "emailAvailable"],
+        rules: ["required", "email"],
         type: "email",
         label: "E-Mail"
       },
@@ -74,18 +74,17 @@ export default {
       password: null,
       passwordConfirm: null
     },
-    snackbar: false
-  }),
-  computed: {
-    authStatus() {
-      return this.$store.getters.getAuthStatus;
+    alertError: {
+      active: false,
+      message: ""
     }
-  },
+  }),
   methods: {
     handleSubmit() {
       this.$refs.form.validate().then(success => {
         if (!success) return;
         this.signup();
+        this.alertError.active = false;
       });
     },
     signup() {
@@ -98,9 +97,14 @@ export default {
           () => this.$router.push("/home"),
           err => {
             if (err) {
-              this.$refs.form.setErrors(err);
+              if (typeof err === "object") this.$refs.form.setErrors(err);
+              else {
+                this.alertError.active = true;
+                this.alertError.message = err;
+              }
             } else {
-              this.snackbar = true;
+              this.alertError.active = true;
+              this.alertError.message = this.$store.getters.getAuthStatus;
             }
           }
         );

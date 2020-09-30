@@ -30,8 +30,12 @@ const auth = {
             resolve();
           },
           err => {
-            commit("setAuthStatus", err.response.data.error.message);
-            reject();
+            if (err.response.status === 400 || err.response.status === 401) {
+              reject("Incorrect E-Mail or Password");
+            } else {
+              commit("setAuthStatus", err.response.data.error.message);
+              reject();
+            }
           }
         );
       });
@@ -47,6 +51,8 @@ const auth = {
           err => {
             if (err.response.status === 400) {
               reject(err.response.data.dataErrors);
+            } else if (err.response.status === 409) {
+              reject("E-Mail is already taken");
             } else {
               commit("setAuthStatus", err.response.data.error.message);
               reject();

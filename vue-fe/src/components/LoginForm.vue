@@ -1,5 +1,12 @@
 <template>
   <div>
+    <v-row justify="center">
+      <v-col cols="auto">
+        <v-alert v-if="alertError.active" dismissible outlined type="error">
+          {{ alertError.message }}
+        </v-alert>
+      </v-col>
+    </v-row>
     <ValidationObserver ref="form">
       <v-form @submit.prevent="handleSubmit">
         <v-row justify="center" v-for="(field, i) in formFields" :key="i">
@@ -27,14 +34,6 @@
         </v-row>
       </v-form>
     </ValidationObserver>
-    <v-snackbar v-model="snackbar">
-      {{ authStatus }}
-      <template v-slot:action="{ attrs }">
-        <v-btn color="pink" text v-bind="attrs" @click="snackbar = false"
-          >Close</v-btn
-        >
-      </template>
-    </v-snackbar>
   </div>
 </template>
 
@@ -65,19 +64,17 @@ export default {
       email: null,
       password: null
     },
-    snackbar: false
-  }),
-  computed: {
-    authStatus() {
-      return this.$store.getters.getAuthStatus;
+    alertError: {
+      active: false,
+      message: ""
     }
-  },
-
+  }),
   methods: {
     handleSubmit() {
       this.$refs.form.validate().then(success => {
         if (!success) return;
         this.login();
+        this.alertError.active = false;
       });
     },
     login() {
@@ -88,7 +85,12 @@ export default {
         })
         .then(
           () => this.$router.push("/home"),
-          () => (this.snackbar = true)
+          err => {
+            this.alertError.active = true;
+            this.alertError.message = err
+              ? err
+              : this.$store.getters.getAuthStatus;
+          }
         );
     }
   }
