@@ -48,7 +48,7 @@ export default {
           display: !this.isAuthenticated
         },
         {
-          route: "/login",
+          route: "/",
           icon: "mdi-logout",
           title: "Logout",
           display: this.isAuthenticated,
