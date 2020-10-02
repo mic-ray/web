@@ -19,6 +19,7 @@ exports.auth_login = (req, res, next) => {
 exports.auth_signup = (req, res, next) => {
   const credentials = {
     email: req.body.email,
+    username: req.body.username,
     password: req.body.password
   };
 

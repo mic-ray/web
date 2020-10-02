@@ -1,9 +1,9 @@
 const ValidationService = require("../services/validation.service");
-const { ApiError } = require("../utils/error");
 
 exports.validateCredentials = (req, res, next) => {
   const validationError = ValidationService.validateCredentials({
     email: req.body.email,
+    username: req.body.username,
     password: req.body.password
   });
   if (validationError) {

@@ -53,7 +53,11 @@ exports.signup = credentials => {
           .hash(credentials.password, 12)
           // Create a new user with the password hash and provided email
           .then(hash =>
-            DBService.addUser({ email: credentials.email, password: hash })
+            DBService.addUser({
+              email: credentials.email,
+              username: credentials.username,
+              password: hash
+            })
           )
           // Resolve the promise with a JWT
           .then(() => {

@@ -16,13 +16,14 @@ exports.connect = () => {
 
 /**
  * Creates a new User in the database
- * @param {*} userData Data (E-Mail and Password) of the user to be added
+ * @param {*} userData Data (E-Mail, Username and Password) of the user to be added
  */
 exports.addUser = userData => {
   // Create a new User record
   const user = new User({
     _id: new mongoose.Types.ObjectId(),
     email: userData.email,
+    username: userData.username,
     password: userData.password
   });
   // Save the created document and return the promise
