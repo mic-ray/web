@@ -34,11 +34,11 @@ const auth = {
             resolve();
           },
           err => {
+            // If wrong data format or values were sent
             if (err.response.status === 400 || err.response.status === 401) {
               reject("Incorrect E-Mail or Password");
             } else {
-              commit("setAuthStatus", err.response.data.error.message);
-              reject();
+              reject(err.response.data.error.message);
             }
           }
         );
@@ -53,13 +53,16 @@ const auth = {
             resolve();
           },
           err => {
+            // If the request contains badly formatted data
             if (err.response.status === 400) {
+              // Reject with the data errors
               reject(err.response.data.dataErrors);
+              // If the request is conflicting
             } else if (err.response.status === 409) {
               reject("E-Mail is already taken");
             } else {
-              commit("setAuthStatus", err.response.data.error.message);
-              reject();
+              // Else reject with other error message
+              reject(err.response.data.error.message);
             }
           }
         );

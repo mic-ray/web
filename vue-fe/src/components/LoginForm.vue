@@ -87,9 +87,7 @@ export default {
           () => this.$router.push("/home"),
           err => {
             this.alertError.active = true;
-            this.alertError.message = err
-              ? err
-              : this.$store.getters.getAuthStatus;
+            this.alertError.message = err;
           }
         );
     }

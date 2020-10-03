@@ -28,7 +28,6 @@
             </ValidationProvider>
           </v-col>
         </v-row>
-
         <v-row justify="center">
           <v-col cols="auto">
             <v-btn type="submit">Signup</v-btn>
@@ -57,6 +56,12 @@ export default {
         label: "E-Mail"
       },
       {
+        model: "username",
+        rules: ["required", "min:3"],
+        type: "text",
+        label: "Username"
+      },
+      {
         model: "password",
         rules: ["required", "min:8"],
         type: "password",
@@ -71,6 +76,7 @@ export default {
     ],
     models: {
       email: null,
+      username: null,
       password: null,
       passwordConfirm: null
     },
@@ -91,20 +97,16 @@ export default {
       this.$store
         .dispatch("signup", {
           email: this.models.email,
+          username: this.models.username,
           password: this.models.password
         })
         .then(
           () => this.$router.push("/home"),
           err => {
-            if (err) {
-              if (typeof err === "object") this.$refs.form.setErrors(err);
-              else {
-                this.alertError.active = true;
-                this.alertError.message = err;
-              }
-            } else {
+            if (typeof err === "object") this.$refs.form.setErrors(err);
+            else {
               this.alertError.active = true;
-              this.alertError.message = this.$store.getters.getAuthStatus;
+              this.alertError.message = err;
             }
           }
         );
