@@ -5,13 +5,13 @@ const ValidationGuard = require("../guards/validation.guard");
 
 router.post(
   "/login",
-  ValidationGuard.validateCredentials,
+  ValidationGuard.validateLoginCredentials,
   AuthController.auth_login
 );
 
 router.post(
   "/signup",
-  ValidationGuard.validateCredentials,
+  ValidationGuard.validateSignupCredentials,
   AuthController.auth_signup
 );
 

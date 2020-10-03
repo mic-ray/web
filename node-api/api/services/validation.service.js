@@ -9,13 +9,7 @@ const emailSchema = Joi.object({
   })
 });
 
-const credentialsSchema = emailSchema.append({
-  username: Joi.string().trim().min(3).required().messages({
-    "string.base": `Username should be of type text`,
-    "string.empty": `Username can not be empty`,
-    "string.min": `Username has to be at least {#limit} characters long`,
-    "any.required": `Username is required`
-  }),
+const loginCredentialsSchema = emailSchema.append({
   password: Joi.string().trim().min(8).required().messages({
     "string.base": `Password should be of type text`,
     "string.empty": `Password can not be empty`,
@@ -24,9 +18,23 @@ const credentialsSchema = emailSchema.append({
   })
 });
 
-exports.validateCredentials = credentials =>
-  credentialsSchema.validate(credentials).error
-    ? credentialsSchema.validate(credentials, { abortEarly: false }).error
+const signupCredentialsSchema = loginCredentialsSchema.append({
+  username: Joi.string().trim().min(3).required().messages({
+    "string.base": `Username should be of type text`,
+    "string.empty": `Username can not be empty`,
+    "string.min": `Username has to be at least {#limit} characters long`,
+    "any.required": `Username is required`
+  })
+});
+
+exports.validateSignupCredentials = credentials =>
+  signupCredentialsSchema.validate(credentials).error
+    ? signupCredentialsSchema.validate(credentials, { abortEarly: false }).error
+    : null;
+
+exports.validateLoginCredentials = credentials =>
+  loginCredentialsSchema.validate(credentials).error
+    ? loginCredentialsSchema.validate(credentials, { abortEarly: false }).error
     : null;
 
 exports.validateEmail = email =>
