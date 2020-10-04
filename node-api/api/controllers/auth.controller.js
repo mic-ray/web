@@ -6,10 +6,10 @@ exports.auth_login = (req, res, next) => {
     password: req.body.password
   };
   AuthService.login(credentials).then(
-    token => {
+    result => {
       return res.status(200).json({
         result: "Login successful!",
-        token: token
+        user: result
       });
     },
     err => next(err)
@@ -27,7 +27,7 @@ exports.auth_signup = (req, res, next) => {
     result => {
       return res.status(200).json({
         result: "Signup successful!",
-        token: result
+        user: result
       });
     },
     err => next(err)

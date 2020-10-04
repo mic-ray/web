@@ -23,11 +23,15 @@ exports.login = credentials => {
         }
         // Otherwise compare the passwords
         bcrypt.compare(credentials.password, res[0].password, (_, success) => {
-          // If passwords are equal resolve with a JWT
+          // If passwords are equal resolve with user data
           if (success) {
-            return resolve(
-              generateToken({ email: res[0].email, userId: res[0]._id })
-            );
+            return resolve({
+              username: res[0].username,
+              token: generateToken({
+                email: res[0].email,
+                username: res[0].username
+              })
+            });
             // Else reject with an error
           } else return reject(new ApiError("Wrong Password provided", 401));
         });
@@ -59,9 +63,16 @@ exports.signup = credentials => {
               password: hash
             })
           )
-          // Resolve the promise with a JWT
+          // Resolve the promise with user data
+          // containing username and a JWT
           .then(() => {
-            resolve(generateToken({ email: credentials.email }));
+            resolve({
+              username: credentials.username,
+              token: generateToken({
+                email: credentials.email,
+                username: credentials.username
+              })
+            });
           })
           // In case of an error reject with catched error
           .catch(err => {
