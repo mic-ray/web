@@ -1,32 +1,16 @@
 <template>
-  <div>
-    <v-row><HelloWorld :name="user"/></v-row>
-    <v-row justify="center"
-      ><v-btn @click="getInfo">{{ info }}</v-btn></v-row
-    >
-  </div>
+  <h1>Hello {{ username }}!</h1>
 </template>
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
   name: "Home",
-  components: {
-    HelloWorld
-  },
-  methods: {
-    // Set info data to the value from the store
-    getInfo() {
-      this.info = this.$store.getters.getInfo;
-    }
-  },
   data: () => ({
-    user: "User",
-    info: null
+    username: "User"
   }),
-  // Call the store action when component is mounted
-  mounted() {
-    this.$store.dispatch("getInfo");
+  // Retreive username from the store,
+  // when component is created
+  created() {
+    this.username = this.$store.getters.getUsername;
   }
 };
 </script>

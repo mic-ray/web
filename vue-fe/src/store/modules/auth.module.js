@@ -1,26 +1,37 @@
 import AuthService from "@/services/auth.service";
 
+const TOKEN_KEY = "token";
+const USER_KEY = "username";
+
 const auth = {
   state: {
     authStatus: null,
-    token: localStorage.getItem("token") || null
+    token: localStorage.getItem(TOKEN_KEY) || null,
+    username: localStorage.getItem(USER_KEY) || null
   },
 
   getters: {
     getAuthStatus: state => state.authStatus,
-    getToken: state => state.token
+    getToken: state => state.token,
+    getUsername: state => state.username
   },
   mutations: {
     setAuthStatus: (state, data) => {
       state.authStatus = data;
     },
     setToken: (state, token) => {
-      localStorage.setItem("token", token);
+      localStorage.setItem(TOKEN_KEY, token);
       state.token = token;
     },
+    setUsername: (state, username) => {
+      localStorage.setItem(USER_KEY, username);
+      state.username = username;
+    },
     logout: state => {
-      localStorage.removeItem("token");
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
       state.token = null;
+      state.username = null;
     }
   },
 
@@ -30,7 +41,8 @@ const auth = {
         AuthService.login(credentials).then(
           response => {
             commit("setAuthStatus", response.data.result);
-            commit("setToken", response.data.token);
+            commit("setToken", response.data.user.token);
+            commit("setUsername", response.data.user.username);
             resolve();
           },
           err => {
@@ -49,7 +61,8 @@ const auth = {
         AuthService.signup(credentials).then(
           response => {
             commit("setAuthStatus", response.data.result);
-            commit("setToken", response.data.token);
+            commit("setToken", response.data.user.token);
+            commit("setUsername", response.data.user.username);
             resolve();
           },
           err => {
