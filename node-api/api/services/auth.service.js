@@ -15,7 +15,7 @@ const generateToken = payload => {
 exports.login = credentials => {
   return new Promise((resolve, reject) => {
     // Find a user with the provided email
-    DBService.findUser(credentials.email)
+    DBService.findUser({ email: credentials.email })
       .then(res => {
         // If no user is found reject
         if (res.length < 1) {
@@ -48,36 +48,44 @@ exports.login = credentials => {
 exports.signup = credentials => {
   return new Promise((resolve, reject) => {
     // Find a user with the provided email
-    DBService.findUser(credentials.email).then(res => {
+    DBService.findUser({ email: credentials.email }).then(res => {
       // If a user is found reject
       if (res.length > 0) {
         reject(new ApiError("E-Mail is already taken", 409));
       } else {
-        bcrypt
-          .hash(credentials.password, 12)
-          // Create a new user with the password hash and provided email
-          .then(hash =>
-            DBService.addUser({
-              email: credentials.email,
-              username: credentials.username,
-              password: hash
-            })
-          )
-          // Resolve the promise with user data
-          // containing username and a JWT
-          .then(() => {
-            resolve({
-              username: credentials.username,
-              token: generateToken({
-                email: credentials.email,
-                username: credentials.username
+        // Find a user with the provided username
+        DBService.findUser({ username: credentials.username }).then(res => {
+          // If a user is found reject
+          if (res.length > 0) {
+            reject(new ApiError("Username is already taken", 409));
+          } else {
+            bcrypt
+              .hash(credentials.password, 12)
+              // Create a new user with the password hash and provided email
+              .then(hash =>
+                DBService.addUser({
+                  email: credentials.email,
+                  username: credentials.username,
+                  password: hash
+                })
+              )
+              // Resolve the promise with user data
+              // containing username and a JWT
+              .then(() => {
+                resolve({
+                  username: credentials.username,
+                  token: generateToken({
+                    email: credentials.email,
+                    username: credentials.username
+                  })
+                });
               })
-            });
-          })
-          // In case of an error reject with catched error
-          .catch(err => {
-            reject(new Error(err));
-          });
+              // In case of an error reject with catched error
+              .catch(err => {
+                reject(new Error(err));
+              });
+          }
+        });
       }
     });
     // Hash the password using bcrypt

@@ -30,6 +30,6 @@ exports.addUser = userData => {
   return user.save();
 };
 
-exports.findUser = userEmail => {
-  return User.find({ email: userEmail }).exec();
+exports.findUser = searchCriteria => {
+  return User.find(searchCriteria).exec();
 };
