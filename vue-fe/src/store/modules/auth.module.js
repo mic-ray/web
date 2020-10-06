@@ -70,11 +70,9 @@ const auth = {
             if (err.response.status === 400) {
               // Reject with the data errors
               reject(err.response.data.dataErrors);
-              // If the request is conflicting
-            } else if (err.response.status === 409) {
-              reject("E-Mail is already taken");
             } else {
-              // Else reject with other error message
+              // Else reject with error message about
+              // data conflict or internal error
               reject(err.response.data.error.message);
             }
           }
