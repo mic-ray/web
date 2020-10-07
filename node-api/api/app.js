@@ -27,6 +27,8 @@ const { authRoutes } = require("./routes/auth");
 app.use("/auth", authRoutes);
 const { usersRoutes } = require("./routes/users");
 app.use("/users", usersRoutes);
+const { notesRoutes } = require("./routes/notes");
+app.use("/notes", notesRoutes);
 
 // If no route has matched
 app.use((req, res, next) => {

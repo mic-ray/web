@@ -51,3 +51,18 @@ exports.validateEmail = (req, res, next) => {
   }
   next();
 };
+
+exports.validateNote = (req, res, next) => {
+  const validationError = ValidationService.validateNote(req.body.note);
+  if (validationError) {
+    var errors = {};
+    validationError.details.forEach(err => {
+      errors[err.path[0]] = [err.message];
+    });
+    return res.status(400).json({
+      result: "Invalid data format!",
+      dataErrors: errors
+    });
+  }
+  next();
+};

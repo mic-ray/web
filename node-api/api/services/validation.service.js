@@ -27,6 +27,26 @@ const signupCredentialsSchema = loginCredentialsSchema.append({
   })
 });
 
+const noteSchema = Joi.object({
+  title: Joi.string().trim().required().messages({
+    "string.base": `Title should be of type text`,
+    "string.empty": `Title can not be empty`,
+    "any.required": `Title is required`
+  }),
+  description: Joi.string().trim().messages({
+    "string.base": `Title should be of type text`,
+    "string.empty": `Title can not be empty`
+  }),
+  createdBy: Joi.string().trim().required().messages({
+    "string.base": `Creator should be of type text`,
+    "string.empty": `Creator can not be empty`,
+    "any.required": `Creator is required`
+  }),
+  createdAt: Joi.date().messages({
+    "date.base": `Creation date should be of type date`
+  })
+});
+
 exports.validateSignupCredentials = credentials =>
   signupCredentialsSchema.validate(credentials).error
     ? signupCredentialsSchema.validate(credentials, { abortEarly: false }).error
@@ -40,4 +60,9 @@ exports.validateLoginCredentials = credentials =>
 exports.validateEmail = email =>
   emailSchema.validate({ email }).error
     ? emailSchema.validate({ email }, { abortEarly: false }).error
+    : null;
+
+exports.validateNote = note =>
+  noteSchema.validate(note).error
+    ? noteSchema.validate(note, { abortEarly: false }).error
     : null;

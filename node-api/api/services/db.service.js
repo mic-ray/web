@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const User = require("../models/user.model");
+const Note = require("../models/note.model");
 
 /**
  * Connects to the MongoDB database
@@ -32,4 +33,20 @@ exports.addUser = userData => {
 
 exports.findUser = searchCriteria => {
   return User.find(searchCriteria).exec();
+};
+
+/**
+ * Creates a new Note in the database
+ * @param {*} noteData Note data to be added
+ */
+exports.addNote = noteData => {
+  const note = new Note({
+    _id: new mongoose.Types.ObjectId(),
+    title: noteData.title,
+    description: noteData.description,
+    createdBy: noteData.createdBy,
+    createdAt: noteData.createdAt
+  });
+  // Save the created document and return the promise
+  return note.save();
 };
