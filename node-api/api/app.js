@@ -21,8 +21,6 @@ app.use((req, res, next) => {
 // Establish database connection
 DBService.connect();
 
-const { infoRoutes } = require("./routes/info");
-app.use("/info", infoRoutes);
 const { authRoutes } = require("./routes/auth");
 app.use("/auth", authRoutes);
 const { usersRoutes } = require("./routes/users");
