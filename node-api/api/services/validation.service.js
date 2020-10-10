@@ -34,8 +34,8 @@ const noteSchema = Joi.object({
     "any.required": `Title is required`
   }),
   description: Joi.string().trim().messages({
-    "string.base": `Title should be of type text`,
-    "string.empty": `Title can not be empty`
+    "string.base": `Description should be of type text`,
+    "string.empty": `Description can not be empty`
   }),
   createdBy: Joi.string().trim().required().messages({
     "string.base": `Creator should be of type text`,

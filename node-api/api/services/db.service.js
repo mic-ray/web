@@ -40,13 +40,9 @@ exports.findUser = searchCriteria => {
  * @param {*} noteData Note data to be added
  */
 exports.addNote = noteData => {
-  const note = new Note({
-    _id: new mongoose.Types.ObjectId(),
-    title: noteData.title,
-    description: noteData.description,
-    createdBy: noteData.createdBy,
-    createdAt: noteData.createdAt
-  });
+  // Add an ID prop to the note data
+  noteData._id = new mongoose.Types.ObjectId();
+  const note = new Note(noteData);
   // Save the created document and return the promise
   return note.save();
 };
