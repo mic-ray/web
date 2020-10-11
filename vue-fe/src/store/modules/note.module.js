@@ -2,7 +2,7 @@ import NoteService from "@/services/note.service";
 
 const note = {
   state: {
-    notes: null
+    notes: []
   },
 
   getters: {

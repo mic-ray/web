@@ -35,6 +35,17 @@
                 hint="A note description is optional"
               ></v-text-field>
             </v-col>
+            <v-col cols="12">
+              <v-alert
+                v-if="errorAlert.active"
+                dismissible
+                outlined
+                @input="resetAlert"
+                type="error"
+              >
+                {{ errorAlert.message }}
+              </v-alert>
+            </v-col>
           </v-row>
         </v-card-text>
         <v-card-actions>
@@ -65,21 +76,61 @@ export default {
       { text: "Created at", value: "createdAt" },
       { text: "Assigned", value: "assigned" }
     ],
+    errorAlert: {
+      active: false,
+      message: ""
+    },
     notes: []
   }),
   methods: {
     handleSave() {
-      this.notes.push({
+      // Create note data object
+      let noteData = {
         title: this.dialog.noteTitle,
-        createdAt: new Date().toLocaleString(),
-        assigned: this.username
-      });
-      this.resetDialog();
+        createdBy: ""
+      };
+      // If description is not empty
+      if (this.dialog.noteDescription.trim())
+        // Add it to note data
+        noteData.description = this.dialog.noteDescription;
+      // Call store action to save note
+      this.$store.dispatch("addNote", noteData).then(
+        () => {
+          this.notes.push({
+            title: this.dialog.noteTitle,
+            createdAt: new Date().toLocaleString(),
+            assigned: this.username
+          });
+          this.resetDialog();
+        },
+        // Display error alert if an error occured
+        err => {
+          this.errorAlert = {
+            active: true,
+            message: err
+          };
+        }
+      );
     },
+    /**
+     * Resets the dialog
+     */
     resetDialog() {
-      this.dialog.noteTitle = "";
-      this.dialog.noteDescription = "";
-      this.dialog.active = false;
+      this.dialog = {
+        active: false,
+        noteTitle: "",
+        noteDescription: ""
+      };
+      this.resetAlert();
+    },
+    /**
+     * Resets the error alert
+     */
+    resetAlert() {
+      this.errorAlert = {
+        active: false,
+        message: ""
+      };
     }
   },
   // Retreive username from the store,
