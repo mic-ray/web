@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const DBService = require("../services/db.service");
-const { ApiError } = require("../utils/error");
+const ApiError = require("../utils/error");
 
 /**
  * Generates a JWT

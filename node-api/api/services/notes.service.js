@@ -1,5 +1,5 @@
 const DBService = require("../services/db.service");
-const { ApiError } = require("../utils/error");
+const ApiError = require("../utils/error");
 
 exports.addNote = note => {
   return new Promise((resolve, reject) => {
