@@ -31,6 +31,10 @@ exports.addUser = userData => {
   return user.save();
 };
 
+/**
+ * Find a user in the database
+ * @param {*} searchCriteria Criteria to filter the search
+ */
 exports.findUser = searchCriteria => {
   return User.find(searchCriteria).exec();
 };
@@ -45,4 +49,12 @@ exports.addNote = noteData => {
   const note = new Note(noteData);
   // Save the created document and return the promise
   return note.save();
+};
+
+/**
+ * Find notes in the database
+ * @param {*} searchCriteria Criteria to filter the search
+ */
+exports.findNotes = searchCriteria => {
+  return Note.find(searchCriteria).exec();
 };

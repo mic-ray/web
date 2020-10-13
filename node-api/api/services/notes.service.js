@@ -19,3 +19,33 @@ exports.addNote = note => {
       .catch(err => reject(new Error(err)));
   });
 };
+
+exports.getNotesByUser = user => {
+  return new Promise((resolve, reject) => {
+    // Find the requested user
+    DBService.findUser({ email: user.email })
+      .then(res => {
+        // If no user was found reject
+        if (res.length < 1) {
+          return reject(new ApiError("No user found", 404));
+        }
+        // Otherwise find notes created by the user
+        return DBService.findNotes({ createdBy: res[0]._id });
+      })
+      // Finally resolve with the found notes
+      .then(res => {
+        // Format note data to only include relevant data
+        resolve(
+          res.map(x => {
+            return {
+              id: x._id,
+              title: x.title,
+              description: x.description,
+              createdAt: x.createdAt
+            };
+          })
+        );
+      })
+      .catch(err => reject(new Error(err)));
+  });
+};

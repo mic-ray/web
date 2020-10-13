@@ -25,7 +25,7 @@ exports.auth_signup = (req, res, next) => {
 
   AuthService.signup(credentials).then(
     result => {
-      return res.status(200).json({
+      return res.status(201).json({
         result: "Signup successful!",
         user: result
       });
