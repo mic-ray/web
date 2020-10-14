@@ -15,7 +15,14 @@ exports.addNote = note => {
         return DBService.addNote(note);
       })
       // Finally resolve with the created note ID
-      .then(res => resolve(res._id))
+      .then(res =>
+        resolve({
+          id: res._id,
+          title: res.title,
+          description: res.description,
+          createdAt: res.createdAt
+        })
+      )
       .catch(err => reject(new Error(err)));
   });
 };
