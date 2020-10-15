@@ -13,10 +13,18 @@ router.get(
 );
 
 router.get(
-  "/:email/notes",
-  ValidationGuard.validateEmail,
+  "/:username/notes",
+  ValidationGuard.validateUsername,
   AuthGuard.verifyUser,
   NotesController.notes_by_user
+);
+
+router.post(
+  "/:username/notes",
+  ValidationGuard.validateUsername,
+  ValidationGuard.validateNote,
+  AuthGuard.verifyUser,
+  NotesController.note_add
 );
 
 module.exports = { usersRoutes: router };

@@ -2,6 +2,7 @@ const NotesService = require("../services/notes.service");
 
 exports.note_add = (req, res, next) => {
   const note = req.body.note;
+  note.createdBy = req.params.username;
 
   NotesService.addNote(note).then(
     result => {

@@ -45,11 +45,6 @@ const noteSchema = Joi.object({
     "string.base": `Description should be of type text`,
     "string.empty": `Description can not be empty`
   }),
-  createdBy: Joi.string().trim().required().messages({
-    "string.base": `Creator should be of type text`,
-    "string.empty": `Creator can not be empty`,
-    "any.required": `Creator is required`
-  }),
   createdAt: Joi.date().messages({
     "date.base": `Creation date should be of type date`
   })
