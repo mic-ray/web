@@ -1,9 +1,8 @@
 const UsersService = require("../services/users.service");
-const ApiError = require("../utils/error");
 
-exports.user_email = (req, res, next) => {
-  const email = req.params.email;
-  UsersService.getUserByEmail(email).then(
+exports.user_by_username = (req, res, next) => {
+  const username = req.params.username;
+  UsersService.getUserByUsername(username).then(
     result => {
       return res.status(200).json({
         result: "User found!",

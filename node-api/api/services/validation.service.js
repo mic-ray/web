@@ -17,15 +17,23 @@ const loginCredentialsSchema = emailSchema.append({
     "any.required": `Password is required`
   })
 });
-
-const signupCredentialsSchema = loginCredentialsSchema.append({
-  username: Joi.string().trim().min(3).required().messages({
-    "string.base": `Username should be of type text`,
-    "string.empty": `Username can not be empty`,
-    "string.min": `Username has to be at least {#limit} characters long`,
-    "any.required": `Username is required`
-  })
+const usernameSchema = Joi.object({
+  username: Joi.string()
+    .trim()
+    .min(3)
+    .max(25)
+    .regex(/^[a-z0-9_-]+$/)
+    .required()
+    .messages({
+      "string.base": `Username should be of type text`,
+      "string.empty": `Username can not be empty`,
+      "string.min": `Username has to be at least {#limit} characters long`,
+      "string.max": `Username has to be less than {#limit} characters long`,
+      "string.pattern.base": `Username can only contain lowercase letters (a-z), numbers (0-9), underscore (_) and hyphen (-)`,
+      "any.required": `Username is required`
+    })
 });
+const signupCredentialsSchema = loginCredentialsSchema.concat(usernameSchema);
 
 const noteSchema = Joi.object({
   title: Joi.string().trim().required().messages({
@@ -60,6 +68,11 @@ exports.validateLoginCredentials = credentials =>
 exports.validateEmail = email =>
   emailSchema.validate({ email }).error
     ? emailSchema.validate({ email }, { abortEarly: false }).error
+    : null;
+
+exports.validateUsername = username =>
+  usernameSchema.validate({ username }).error
+    ? usernameSchema.validate({ username }, { abortEarly: false }).error
     : null;
 
 exports.validateNote = note =>

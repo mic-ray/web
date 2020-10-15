@@ -20,8 +20,8 @@ exports.verifyUser = (req, res, next) => {
     // Get and verify token from request headers
     const token = req.headers.authorization.split(" ")[1];
     const payload = jwt.verify(token, process.env.CRYPTO_KEY);
-    // Check if requested email is equal to verified one
-    if (req.params.email !== payload.email)
+    // Check if requested username is equal to verified one
+    if (req.params.username !== payload.username)
       return next(new ApiError(authError.message, 403));
     req.user = payload;
     next();

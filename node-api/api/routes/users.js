@@ -6,10 +6,10 @@ const ValidationGuard = require("../guards/validation.guard");
 const AuthGuard = require("../guards/auth.guard");
 
 router.get(
-  "/:email",
-  ValidationGuard.validateEmail,
+  "/:username",
+  ValidationGuard.validateUsername,
   AuthGuard.verifyUser,
-  UsersController.user_email
+  UsersController.user_by_username
 );
 
 router.get(
