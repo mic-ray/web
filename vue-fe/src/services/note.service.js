@@ -1,8 +1,19 @@
 import api from "@/utils/api";
 
+/**
+ * Return auth headers
+ * @param {*} token Token to be included in the header
+ */
+const getHeaders = token => {
+  return { headers: { Authorization: "Bearer " + token } };
+};
 class NoteService {
-  addNote(noteData) {
-    return api.post("/notes", { note: noteData });
+  addNote(noteData, authData) {
+    return api.post(
+      `/users/${authData.username}/notes`,
+      { note: noteData },
+      getHeaders(authData.token)
+    );
   }
 }
 

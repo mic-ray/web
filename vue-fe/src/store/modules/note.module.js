@@ -15,9 +15,15 @@ const note = {
   },
 
   actions: {
-    addNote({ commit }, noteData) {
+    addNote({ commit, rootState }, noteData) {
+      // Get auth data from auth module
+      const authData = {
+        token: rootState.auth.token,
+        username: rootState.auth.username
+      };
+
       return new Promise((resolve, reject) => {
-        NoteService.addNote(noteData).then(
+        NoteService.addNote(noteData, authData).then(
           response => {
             commit("addNote", response.data.note);
             resolve();

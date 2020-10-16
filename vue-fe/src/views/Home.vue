@@ -79,28 +79,23 @@ export default {
     errorAlert: {
       active: false,
       message: ""
-    },
-    notes: []
+    }
   }),
   methods: {
     handleSave() {
       // Create note data object
       let noteData = {
-        title: this.dialog.noteTitle,
-        createdBy: ""
+        title: this.dialog.noteTitle
       };
+
       // If description is not empty
       if (this.dialog.noteDescription.trim())
         // Add it to note data
         noteData.description = this.dialog.noteDescription;
+
       // Call store action to save note
       this.$store.dispatch("addNote", noteData).then(
         () => {
-          this.notes.push({
-            title: this.dialog.noteTitle,
-            createdAt: new Date().toLocaleString(),
-            assigned: this.username
-          });
           this.resetDialog();
         },
         // Display error alert if an error occured
@@ -133,6 +128,18 @@ export default {
       };
     }
   },
+  computed: {
+    notes: function() {
+      return this.$store.getters.getNotes.map(x => {
+        return {
+          title: x.title,
+          createdAt: new Date(x.createdAt).toLocaleString(),
+          assigned: x.createdBy
+        };
+      });
+    }
+  },
+
   // Retreive username from the store,
   // when component is created
   created() {
