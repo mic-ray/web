@@ -14,12 +14,15 @@ exports.addNote = note => {
         note.createdBy = res[0]._id;
         return DBService.addNote(note);
       })
-      // Finally resolve with the created note ID
+      // Populate the user in the saved document
+      .then(res => res.populate("createdBy").execPopulate())
+      // Finally resolve with data of the created note
       .then(res =>
         resolve({
           id: res._id,
           title: res.title,
           description: res.description,
+          createdBy: res.createdBy.username,
           createdAt: res.createdAt
         })
       )
