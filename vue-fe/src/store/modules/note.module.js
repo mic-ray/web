@@ -11,6 +11,9 @@ const note = {
   mutations: {
     addNote: (state, note) => {
       state.notes = [...state.notes, note];
+    },
+    setNotes: (state, notes) => {
+      state.notes = notes;
     }
   },
 
@@ -37,6 +40,26 @@ const note = {
               // Else reject with other error message
               reject(err.response.data.error.message);
             }
+          }
+        );
+      });
+    },
+    getNotes({ commit, rootState }) {
+      return new Promise((resolve, reject) => {
+        // Get auth data from auth module
+        const authData = {
+          token: rootState.auth.token,
+          username: rootState.auth.username
+        };
+        NoteService.getNotes(authData).then(
+          response => {
+            // Commit received notes
+            commit("setNotes", response.data.notes);
+            resolve();
+          },
+          err => {
+            // Reject with error message
+            reject(err.response.data.error.message);
           }
         );
       });

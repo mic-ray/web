@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Hello {{ username }}!</h1>
-    <h3>Your notes:</h3>
+    <h3>Your {{ notes.length }} notes:</h3>
     <v-card
       ><v-data-table
         hide-default-footer
@@ -140,10 +140,12 @@ export default {
     }
   },
 
-  // Retreive username from the store,
-  // when component is created
+  // When component is created
   created() {
+    // Retreive username from the store
     this.username = this.$store.getters.getUsername;
+    // Call store to get notes
+    this.$store.dispatch("getNotes");
   }
 };
 </script>
