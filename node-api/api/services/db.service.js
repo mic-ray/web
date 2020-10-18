@@ -47,8 +47,8 @@ exports.addNote = noteData => {
   // Add an ID prop to the note data
   noteData._id = new mongoose.Types.ObjectId();
   const note = new Note(noteData);
-  // Save the created document and return the promise
-  return note.save();
+  // Save the created document and return result of populating the user
+  return note.save().then(res => res.populate("createdBy").execPopulate());
 };
 
 /**
@@ -56,5 +56,6 @@ exports.addNote = noteData => {
  * @param {*} searchCriteria Criteria to filter the search
  */
 exports.findNotes = searchCriteria => {
-  return Note.find(searchCriteria).exec();
+  // Return found notes, populated with the created user
+  return Note.find(searchCriteria).populate("createdBy").exec();
 };
