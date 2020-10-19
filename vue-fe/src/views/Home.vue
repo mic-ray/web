@@ -4,10 +4,18 @@
     <h3>Your {{ notes.length }} notes:</h3>
     <v-card
       ><v-data-table
-        hide-default-footer
         :headers="noteHeaders"
         :items="notes"
-      ></v-data-table>
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
+      >
+        <template v-slot:[`item.createdAt`]="{ item }">
+          <span>{{ new Date(item.createdAt).toLocaleString() }}</span>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon button @click="deleteNote(item)">mdi-delete</v-icon>
+        </template>
+      </v-data-table>
     </v-card>
     <v-dialog v-model="dialog.active" max-width="500">
       <template v-slot:activator="{ on, attrs }">
@@ -72,14 +80,17 @@ export default {
       noteDescription: ""
     },
     noteHeaders: [
-      { text: "Title", value: "title" },
+      { text: "Title", value: "title", width: 200 },
       { text: "Created at", value: "createdAt" },
-      { text: "Assigned", value: "assigned" }
+      { text: "Assigned", value: "assigned" },
+      { text: "Actions", value: "actions", sortable: false }
     ],
     errorAlert: {
       active: false,
       message: ""
-    }
+    },
+    sortBy: "createdAt",
+    sortDesc: true
   }),
   methods: {
     handleSave() {
@@ -126,6 +137,10 @@ export default {
         active: false,
         message: ""
       };
+    },
+    deleteNote(note) {
+      //ToDo: Implement note delete
+      console.log(note);
     }
   },
   computed: {
@@ -133,7 +148,7 @@ export default {
       return this.$store.getters.getNotes.map(x => {
         return {
           title: x.title,
-          createdAt: new Date(x.createdAt).toLocaleString(),
+          createdAt: +new Date(x.createdAt),
           assigned: x.createdBy
         };
       });
