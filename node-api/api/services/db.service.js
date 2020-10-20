@@ -40,7 +40,7 @@ exports.findUser = searchCriteria => {
 };
 
 /**
- * Creates a new Note in the database
+ * Creates a new note in the database
  * @param {*} noteData Note data to be added
  */
 exports.addNote = noteData => {
@@ -49,6 +49,14 @@ exports.addNote = noteData => {
   const note = new Note(noteData);
   // Save the created document and return result of populating the user
   return note.save().then(res => res.populate("createdBy").execPopulate());
+};
+
+/**
+ * Deletes a note in the database
+ * @param {*} noteId ID of note to be deleted
+ */
+exports.deleteNote = noteId => {
+  return Note.deleteOne({ _id: noteId }).exec();
 };
 
 /**
