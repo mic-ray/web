@@ -16,7 +16,7 @@ exports.note_add = (req, res, next) => {
 };
 
 exports.notes_delete = (req, res, next) => {
-  const noteId = req.body.noteId;
+  const noteId = req.params.noteId;
   NotesService.deleteNote(noteId, req.user).then(
     _ => {
       return res.status(200).json({
