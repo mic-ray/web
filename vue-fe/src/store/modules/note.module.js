@@ -14,6 +14,12 @@ const note = {
     },
     setNotes: (state, notes) => {
       state.notes = notes;
+    },
+    deleteNote: (state, noteId) => {
+      // Find index of note to be deleted
+      var index = state.notes.findIndex(x => x.id === noteId);
+      // If index was found delete
+      if (index !== -1) state.notes.splice(index, 1);
     }
   },
 
@@ -56,6 +62,24 @@ const note = {
             // Commit received notes
             commit("setNotes", response.data.notes);
             resolve();
+          },
+          err => {
+            // Reject with error message
+            reject(err.response.data.error.message);
+          }
+        );
+      });
+    },
+    deleteNote({ commit, rootState }, noteId) {
+      return new Promise((resolve, reject) => {
+        // Get auth data from auth module
+        const authToken = rootState.auth.token;
+
+        NoteService.deleteNote(noteId, authToken).then(
+          () => {
+            // Commit note deletion
+            commit("deleteNote", noteId);
+            resolve("Success");
           },
           err => {
             // Reject with error message

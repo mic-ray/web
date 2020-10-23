@@ -139,14 +139,19 @@ export default {
       };
     },
     deleteNote(note) {
-      //ToDo: Implement note delete
-      console.log(note);
+      // Call store action to delete note
+      this.$store.dispatch("deleteNote", note.id).then(
+        // Log result
+        res => console.log(res),
+        err => console.log(err)
+      );
     }
   },
   computed: {
     notes: function() {
       return this.$store.getters.getNotes.map(x => {
         return {
+          id: x.id,
           title: x.title,
           createdAt: +new Date(x.createdAt),
           assigned: x.createdBy

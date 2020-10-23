@@ -23,6 +23,10 @@ class NoteService {
       getHeaders(authData.token)
     );
   }
+  // Delete note
+  deleteNote(noteId, authToken) {
+    return api.delete(`/notes/${noteId}`, getHeaders(authToken));
+  }
 }
 
 export default new NoteService();
