@@ -79,7 +79,7 @@ const note = {
           () => {
             // Commit note deletion
             commit("deleteNote", noteId);
-            resolve("Success");
+            resolve("Note deleted");
           },
           err => {
             // Reject with error message

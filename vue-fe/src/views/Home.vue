@@ -142,8 +142,20 @@ export default {
       // Call store action to delete note
       this.$store.dispatch("deleteNote", note.id).then(
         // Log result
-        res => console.log(res),
-        err => console.log(err)
+        res => {
+          this.$toast.open({
+            message: res,
+            type: "success",
+            position: "top"
+          });
+        },
+        err => {
+          this.$toast.open({
+            message: err,
+            type: "error",
+            position: "top"
+          });
+        }
       );
     }
   },
