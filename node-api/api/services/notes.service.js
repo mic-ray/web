@@ -64,6 +64,47 @@ exports.deleteNote = (noteId, user) => {
   });
 };
 
+exports.updateNote = (note, user) => {
+  return new Promise((resolve, reject) => {
+    // Find a note with the provided ID
+    DBService.findNotes({ _id: note.id })
+      .then(
+        res => {
+          // If no notes were found throw an error
+          if (res.length < 1) {
+            throw new ApiError("No note with that ID was found", 404);
+          }
+          // Otherwise if the notes creator is not equal to
+          // the user who requested the update throw an error
+          if (res[0].createdBy.username !== user.username) {
+            throw new ApiError("Not allowed to update this note", 403);
+          }
+          // Else update note
+          return DBService.updateNote(res[0], {
+            title: note.title,
+            description: note.description
+          });
+        },
+        _ => {
+          // If a DB error was returned, throw an error
+          throw new ApiError("Invalid note ID provided", 400);
+        }
+      )
+      .then(res => {
+        // Resolve with data of the updated note
+        resolve({
+          id: res._id,
+          title: res.title,
+          description: res.description,
+          createdBy: res.createdBy.username,
+          createdAt: res.createdAt
+        });
+      })
+      // Catch and reject thrown errors
+      .catch(err => reject(err));
+  });
+};
+
 exports.getNotesByUser = user => {
   return new Promise((resolve, reject) => {
     // Find the requested user

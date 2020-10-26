@@ -7,12 +7,14 @@ const Note = require("../models/note.model");
  * Connects to the MongoDB database
  */
 exports.connect = () => {
-  mongoose.connect(process.env.MONGO_URL, {
-    // Setting options to handle
-    // deprecation warnings
-    useUnifiedTopology: true,
-    useNewUrlParser: true
-  });
+  mongoose
+    .connect(process.env.MONGO_URL, {
+      // Setting options to handle
+      // deprecation warnings
+      useUnifiedTopology: true,
+      useNewUrlParser: true
+    })
+    .catch(err => console.log("Could not connect to DB. Error: ", err));
 };
 
 /**
@@ -57,6 +59,17 @@ exports.addNote = noteData => {
  */
 exports.deleteNote = noteId => {
   return Note.deleteOne({ _id: noteId }).exec();
+};
+
+/**
+ * Update a note in the database
+ * @param {*} note Note to be updated
+ * @param {*} noteData New note data
+ */
+exports.updateNote = (note, noteData) => {
+  note.title = noteData.title;
+  note.description = noteData.description;
+  return note.save().then(res => res.populate("createdBy").execPopulate());
 };
 
 /**

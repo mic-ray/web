@@ -44,9 +44,6 @@ const noteSchema = Joi.object({
   description: Joi.string().trim().messages({
     "string.base": `Description should be of type text`,
     "string.empty": `Description can not be empty`
-  }),
-  createdAt: Joi.date().messages({
-    "date.base": `Creation date should be of type date`
   })
 });
 

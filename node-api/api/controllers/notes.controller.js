@@ -27,6 +27,23 @@ exports.notes_delete = (req, res, next) => {
   );
 };
 
+exports.notes_update = (req, res, next) => {
+  const note = {
+    id: req.params.noteId,
+    title: req.body.note.title,
+    description: req.body.note.description
+  };
+  NotesService.updateNote(note, req.user).then(
+    result => {
+      return res.status(200).json({
+        result: `Note updated!`,
+        note: result
+      });
+    },
+    err => next(err)
+  );
+};
+
 exports.notes_by_user = (req, res, next) => {
   NotesService.getNotesByUser(req.user).then(
     result => {
