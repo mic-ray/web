@@ -81,6 +81,7 @@ export default {
       active: false,
       noteTitle: "",
       noteDescription: "",
+      noteId: null,
       editMode: false
     },
     noteHeaders: [
@@ -108,9 +109,22 @@ export default {
         // Add it to note data
         noteData.description = this.dialog.noteDescription;
 
+      // If a note is being edited
       if (this.dialog.editMode) {
-        // Handle note edit
-        console.log(noteData);
+        // Add edited ID to note data
+        noteData.id = this.dialog.noteId;
+        // Call store action to edit note
+        this.$store.dispatch("editNote", noteData).then(
+          () => {
+            this.resetDialog();
+          },
+          err => {
+            this.errorAlert = {
+              active: true,
+              message: err
+            };
+          }
+        );
       } else {
         // Call store action to save note
         this.$store.dispatch("addNote", noteData).then(
@@ -135,6 +149,7 @@ export default {
         active: false,
         noteTitle: "",
         noteDescription: "",
+        noteId: null,
         editMode: false
       };
       this.resetAlert();
@@ -153,6 +168,7 @@ export default {
         active: true,
         noteTitle: note.title,
         noteDescription: note.description,
+        noteId: note.id,
         editMode: true
       };
     },

@@ -87,6 +87,26 @@ const note = {
           }
         );
       });
+    },
+    editNote({ commit, rootState }, note) {
+      return new Promise((resolve, reject) => {
+        // Get auth data from auth module
+        const authToken = rootState.auth.token;
+
+        NoteService.editNote(note, authToken).then(
+          response => {
+            // Commit deletion of old note
+            commit("deleteNote", response.data.note.id);
+            // And addition of updated note
+            commit("addNote", response.data.note);
+            resolve("Note updated");
+          },
+          err => {
+            // Reject with error message
+            reject(err.response.data.error.message);
+          }
+        );
+      });
     }
   }
 };

@@ -27,6 +27,20 @@ class NoteService {
   deleteNote(noteId, authToken) {
     return api.delete(`/notes/${noteId}`, getHeaders(authToken));
   }
+
+  // Edit note
+  editNote(note, authToken) {
+    return api.patch(
+      `/notes/${note.id}`,
+      {
+        note: {
+          title: note.title,
+          description: note.description
+        }
+      },
+      getHeaders(authToken)
+    );
+  }
 }
 
 export default new NoteService();
