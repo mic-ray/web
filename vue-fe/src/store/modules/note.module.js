@@ -35,7 +35,7 @@ const note = {
         NoteService.addNote(noteData, authData).then(
           response => {
             commit("addNote", response.data.note);
-            resolve();
+            resolve("Note added");
           },
           err => {
             // If the request contains badly formatted data
@@ -64,8 +64,14 @@ const note = {
             resolve();
           },
           err => {
-            // Reject with error message
-            reject(err.response.data.error.message);
+            // If the request contains badly formatted data
+            if (err.response.status === 400) {
+              // Reject with the data errors
+              reject(err.response.data.dataErrors);
+            } else {
+              // Reject with error message
+              reject(err.response.data.error.message);
+            }
           }
         );
       });
@@ -102,8 +108,14 @@ const note = {
             resolve("Note updated");
           },
           err => {
-            // Reject with error message
-            reject(err.response.data.error.message);
+            // If the request contains badly formatted data
+            if (err.response.status === 400) {
+              // Reject with the data errors
+              reject(err.response.data.dataErrors);
+            } else {
+              // Reject with error message
+              reject(err.response.data.error.message);
+            }
           }
         );
       });

@@ -27,53 +27,78 @@
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          {{ dialog.editMode ? "Edit note" : "Create new note" }}
-        </v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field
-                v-model="dialog.noteTitle"
-                label="Note title"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-text-field
-                v-model="dialog.noteDescription"
-                label="Note description"
-                hint="A note description is optional"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12">
-              <v-alert
-                v-if="errorAlert.active"
-                dismissible
-                outlined
-                @input="resetAlert"
-                type="error"
-              >
-                {{ errorAlert.message }}
-              </v-alert>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue" text @click="resetDialog">
-            Close
-          </v-btn>
-          <v-btn color="blue" text @click="handleSave">
-            Save
-          </v-btn>
-        </v-card-actions>
+        <ValidationObserver ref="form">
+          <v-form @submit.prevent="handleSave">
+            <v-card-title>
+              {{ dialog.editMode ? "Edit note" : "Create new note" }}
+            </v-card-title>
+            <v-card-text>
+              <v-row>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="Title"
+                    :vid="dialog.noteTitle"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      v-model="dialog.noteTitle"
+                      label="Note title"
+                      :error-messages="errors"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="description"
+                    :vid="dialog.noteDescription"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      v-model="dialog.noteDescription"
+                      label="Note description"
+                      hint="A note description is optional"
+                      :error-messages="errors"
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <v-alert
+                    v-if="errorAlert.active"
+                    dismissible
+                    outlined
+                    @input="resetAlert"
+                    type="error"
+                  >
+                    {{ errorAlert.message }}
+                  </v-alert>
+                </v-col>
+              </v-row>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue" text @click="resetDialog">
+                Close
+              </v-btn>
+              <v-btn color="blue" text type="submit">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-form>
+        </ValidationObserver>
       </v-card>
     </v-dialog>
   </div>
 </template>
 <script>
+import ToastService from "@/services/toast.service.js";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
 export default {
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
   name: "Home",
   data: () => ({
     username: "User",
@@ -99,47 +124,58 @@ export default {
   }),
   methods: {
     handleSave() {
-      // Create note data object
-      let noteData = {
-        title: this.dialog.noteTitle
-      };
+      this.$refs.form.validate().then(success => {
+        if (!success) return;
+        this.errorAlert.active = false;
+        // Create note data object
+        let noteData = {
+          title: this.dialog.noteTitle
+        };
 
-      // If description is not empty
-      if (this.dialog.noteDescription.trim())
-        // Add it to note data
-        noteData.description = this.dialog.noteDescription;
-
-      // If a note is being edited
-      if (this.dialog.editMode) {
-        // Add edited ID to note data
-        noteData.id = this.dialog.noteId;
-        // Call store action to edit note
-        this.$store.dispatch("editNote", noteData).then(
-          () => {
-            this.resetDialog();
-          },
-          err => {
-            this.errorAlert = {
-              active: true,
-              message: err
-            };
-          }
-        );
-      } else {
-        // Call store action to save note
-        this.$store.dispatch("addNote", noteData).then(
-          () => {
-            this.resetDialog();
-          },
-          // Display error alert if an error occured
-          err => {
-            this.errorAlert = {
-              active: true,
-              message: err
-            };
-          }
-        );
-      }
+        // If description is not empty
+        if (this.dialog.noteDescription.trim()) {
+          // Add it to note data
+          noteData.description = this.dialog.noteDescription;
+        } else {
+          // Else add default
+          noteData.description = "No description provided";
+        }
+        // If a note is being edited
+        if (this.dialog.editMode) {
+          // Add edited ID to note data
+          noteData.id = this.dialog.noteId;
+          // Call store action to edit note
+          this.$store.dispatch("editNote", noteData).then(
+            res => {
+              this.resetDialog();
+              ToastService.showToast(res, true);
+            },
+            err => {
+              if (typeof err === "object") this.$refs.form.setErrors(err);
+              else
+                this.errorAlert = {
+                  active: true,
+                  message: err
+                };
+            }
+          );
+        } else {
+          // Call store action to save note
+          this.$store.dispatch("addNote", noteData).then(
+            res => {
+              this.resetDialog();
+              ToastService.showToast(res, true);
+            },
+            // Display error alert if an error occured
+            err => {
+              this.errorAlert = {
+                active: true,
+                message: err
+              };
+            }
+          );
+        }
+      });
     },
     /**
      * Resets the dialog
@@ -176,20 +212,8 @@ export default {
       // Call store action to delete note
       this.$store.dispatch("deleteNote", note.id).then(
         // Log result
-        res => {
-          this.$toast.open({
-            message: res,
-            type: "success",
-            position: "top"
-          });
-        },
-        err => {
-          this.$toast.open({
-            message: err,
-            type: "error",
-            position: "top"
-          });
-        }
+        res => ToastService.showToast(res, true),
+        err => ToastService.showToast(err, false)
       );
     }
   },
