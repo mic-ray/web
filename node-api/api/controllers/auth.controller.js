@@ -33,3 +33,17 @@ exports.auth_signup = (req, res, next) => {
     err => next(err)
   );
 };
+
+exports.auth_check = (req, res) => {
+  // If a user obejct was set on the request
+  if (req.user) {
+    // The token check succeeded
+    return res.status(200).json({
+      result: "Auth check successful"
+    });
+  }
+  // Otherwise it failed
+  return res.status(401).json({
+    result: "Auth check failed"
+  });
+};
