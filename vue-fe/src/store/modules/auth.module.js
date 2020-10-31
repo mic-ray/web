@@ -5,19 +5,19 @@ const USER_KEY = "username";
 
 const auth = {
   state: {
-    authStatus: null,
+    isAuthenticated: false,
     token: localStorage.getItem(TOKEN_KEY) || null,
     username: localStorage.getItem(USER_KEY) || null
   },
 
   getters: {
-    getAuthStatus: state => state.authStatus,
+    isAuthenticated: state => state.isAuthenticated,
     getToken: state => state.token,
     getUsername: state => state.username
   },
   mutations: {
-    setAuthStatus: (state, data) => {
-      state.authStatus = data;
+    setAuth: (state, status) => {
+      state.isAuthenticated = status;
     },
     setToken: (state, token) => {
       localStorage.setItem(TOKEN_KEY, token);
@@ -32,6 +32,7 @@ const auth = {
       localStorage.removeItem(USER_KEY);
       state.token = null;
       state.username = null;
+      state.isAuthenticated = false;
     }
   },
 
@@ -40,7 +41,6 @@ const auth = {
       return new Promise((resolve, reject) => {
         AuthService.login(credentials).then(
           response => {
-            commit("setAuthStatus", response.data.result);
             commit("setToken", response.data.user.token);
             commit("setUsername", response.data.user.username);
             resolve();
@@ -60,7 +60,6 @@ const auth = {
       return new Promise((resolve, reject) => {
         AuthService.signup(credentials).then(
           response => {
-            commit("setAuthStatus", response.data.result);
             commit("setToken", response.data.user.token);
             commit("setUsername", response.data.user.username);
             resolve();
@@ -75,6 +74,20 @@ const auth = {
               // data conflict or internal error
               reject(err.response.data.error.message);
             }
+          }
+        );
+      });
+    },
+    checkAuth({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        AuthService.checkAuth(state.token).then(
+          () => {
+            commit("setAuth", true);
+            resolve();
+          },
+          () => {
+            commit("logout");
+            reject();
           }
         );
       });

@@ -61,6 +61,14 @@ export default {
     logout() {
       this.$store.commit("logout");
     }
+  },
+  created: function() {
+    // Dispatch store action to check auth
+    this.$store.dispatch("checkAuth").then(
+      // If successful, route to home directly
+      () => this.$router.push("/home"),
+      () => null
+    );
   }
 };
 </script>
