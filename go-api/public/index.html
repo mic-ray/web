@@ -7,10 +7,16 @@
   </head>
   <body>
     <h2>Hello World</h2>
+    <button id="send">Send</button>
 
     <script>
       let socket = new WebSocket("ws://127.0.0.1:8080/ws");
       console.log("Attempting Connection...");
+
+      document.getElementById("send").addEventListener("click", e => {
+        console.log("ok");
+        socket.send("Client message!");
+      });
 
       socket.onopen = () => {
         console.log("Successfully Connected");

@@ -2,3 +2,5 @@ node_modules
 
 # Code editor settings
 .vscode
+
+build
