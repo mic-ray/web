@@ -1,0 +1,49 @@
+/* Import */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap");
+
+/* 
+    Setup
+*/
+
+* {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  font-family: Poppins, sans-serif;
+}
+
+body {
+  background-color: #121212;
+  color: #ededed;
+  font-size: 32px;
+}
+
+.btn-white {
+  font-size: 1.5rem;
+  padding: 5px 15px;
+  border-radius: 3px;
+  border-style: none;
+}
+
+.btn-white:active {
+  transform: scale(0.98);
+  box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.7),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.messageContainer {
+  background-color: rgb(44, 44, 44);
+  width: 50%;
+  margin: auto;
+  border-radius: 2%;
+  display: none;
+}
+
+.messageContainer::before {
+  content: "Messages:";
+  text-decoration: underline;
+}
+
+.messageContainer ul {
+  list-style-type: none;
+}
