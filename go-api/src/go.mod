@@ -1,4 +1,4 @@
-module go-api
+module github.com/mic-ray/web/go-api
 
 go 1.15
 

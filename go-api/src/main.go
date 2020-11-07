@@ -27,8 +27,9 @@ func reader(conn *websocket.Conn) {
 			log.Println(err)
 			return
 		}
-		// Print received message
-		log.Println(string(p))
+
+		// Decode received WebSocket message
+		Decode(p)
 
 		// Echo back the received message
 		if err := conn.WriteMessage(messageType, p); err != nil {
