@@ -8,16 +8,17 @@ const outputMessage = msg => {
 };
 
 const connectWS = () => {
-  var socket = new WebSocket("ws://localhost:8080/ws");
+  var socket = io("ws://127.0.0.1:5000");
 
-  socket.onopen = () => {
-    connectStatus.textContent = "Connected";
-    socket.send("Hi from the Client!");
-  };
+  socket.on("connect", () => {
+    connectStatus.textContent = "Connected!";
+    socket.send("Hello!");
+  });
 
-  socket.onmessage = message => {
-    outputMessage(message.data);
-  };
+  socket.on("greet", data => {
+    console.log("received", data);
+    outputMessage(data.data);
+  });
 };
 
 const connectHandler = () => {

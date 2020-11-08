@@ -4,3 +4,7 @@ node_modules
 .vscode
 
 build
+
+venv
+
+__pycache__
