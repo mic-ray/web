@@ -1,26 +1,15 @@
-from flask import Flask
-from flask_socketio import SocketIO, emit
-import sys
+# Import SocketIO instance and setup function
+from app import socketio, setup
+# Import socket events handler
+import socket_handler
 
-app = Flask(__name__)
-socketio = SocketIO(app, cors_allowed_origins="*")
+# Setup an app instance
+app = setup()
 
 
 @app.route("/")
 def home():
     return "Hi from Flask"
-
-
-@socketio.on("connect")
-def handle_connect():
-    print("Client connected!")
-    emit("greet", {"data": "Hi from the Server!"})
-
-
-@socketio.on("message")
-def handle_message(message):
-    print("Received a Client message: " + message)
-
 
 if __name__ == "__main__":
     socketio.run(app)
