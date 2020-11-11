@@ -11,6 +11,7 @@ function connectSocket() {
       resolve("Connected");
       initHandlers(socket);
       socket.send("Hello!");
+      outputMessage("Hello!", true);
     });
     socket.on("error", () => {
       reject("Error");
@@ -25,17 +26,17 @@ function connectSocket() {
  */
 function initHandlers(socket) {
   socket.on("greet", data => {
-    outputMessage(data.data);
+    outputMessage(data.data, false);
   });
 }
 
-function outputMessage(msg) {
-  document.getElementsByClassName("messageContainer")[0].style.display =
-    "block";
-  var messageList = document.getElementById("messageList");
-  var message = document.createElement("li");
+function outputMessage(msg, self) {
+  var messageWrapper = document.getElementById("message-wrapper");
+  var message = document.createElement("div");
+  message.classList.add("message");
+  if (self) message.classList.add("message-self");
   message.textContent = msg;
-  messageList.append(message);
+  messageWrapper.append(message);
 }
 
 export default connectSocket;

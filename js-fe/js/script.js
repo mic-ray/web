@@ -13,7 +13,10 @@ function connectHandler() {
   }
 
   connectSocket().then(
-    res => (connectStatus.textContent = res),
+    () => {
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("chat").style.display = "block";
+    },
     err => (connectStatus.textContent = err)
   );
 }

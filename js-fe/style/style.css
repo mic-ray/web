@@ -31,19 +31,30 @@ body {
     inset -2px -2px 5px rgba(0, 0, 0, 0.7);
 }
 
-.messageContainer {
-  background-color: rgb(44, 44, 44);
-  width: 50%;
-  margin: auto;
-  border-radius: 2%;
+#chat {
   display: none;
+  padding: 10px;
+  margin: 20px auto;
+  width: 500px;
+  background-color: rgb(100, 100, 100);
+  border-radius: 5px;
+}
+#chat::before {
+  content: "Chat:";
+  font-size: 0.9em;
 }
 
-.messageContainer::before {
-  content: "Messages:";
-  text-decoration: underline;
+#message-wrapper {
+  background-color: rgb(50, 50, 50);
+  margin: 10px auto;
+  border: 1px solid black;
 }
 
-.messageContainer ul {
-  list-style-type: none;
+.message {
+  height: 30px;
+  font-size: 0.75em;
+}
+
+.message-self {
+  background-color: rgb(75, 75, 75);
 }
