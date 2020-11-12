@@ -5,17 +5,20 @@
     Setup
 */
 
-* {
-  padding: 0px;
+html {
+  height: 100%;
+  width: 100%;
   margin: 0px;
-  text-align: center;
   font-family: "Nunito", sans-serif;
+  color: white;
 }
-
 body {
-  background-color: #121212;
-  color: #ededed;
+  background-color: #0cbaba;
+  background-color: #7f5a83;
+  background-image: linear-gradient(to top left, #7f5a83 0%, #0d324d 75%);
   font-size: 32px;
+  padding: 0px;
+  text-align: center;
 }
 
 .btn-white {
@@ -31,21 +34,44 @@ body {
     inset -2px -2px 5px rgba(0, 0, 0, 0.7);
 }
 
-#chat {
-  display: none;
-  padding: 10px;
-  margin: 20px auto;
-  width: 500px;
-  background-color: rgb(100, 100, 100);
-  border-radius: 5px;
-}
-#chat::before {
-  content: "Chat:";
-  font-size: 0.9em;
+#welcome {
+  display: block;
 }
 
+#chat {
+  display: none;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 50px;
+  gap: 10px;
+  padding: 10px;
+  margin: 25px auto;
+  width: 75vw;
+  height: 75vh;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+}
+
+#input {
+  display: grid;
+  grid-template-columns: 7fr 1fr;
+  align-items: center;
+  gap: 5px;
+}
+#message-input {
+  height: 30px;
+  font-family: inherit;
+  border-radius: 5px;
+}
+
+#message-send {
+  height: 35px;
+}
 #message-wrapper {
-  background-color: rgb(50, 50, 50);
+  height: 90%;
+  max-height: 90%;
+  border-radius: 5px;
+  overflow-y: auto;
   margin: 10px auto;
   border: 1px solid black;
 }
@@ -56,5 +82,5 @@ body {
 }
 
 .message-self {
-  background-color: rgb(75, 75, 75);
+  background-color: rgba(0, 0, 0, 0.15);
 }
