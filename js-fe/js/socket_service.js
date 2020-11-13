@@ -4,8 +4,10 @@
  * @return {*} Promise, which resolves if connection was successful
  */
 
+var socket;
+
 function connectSocket() {
-  var socket = io("ws://127.0.0.1:5000");
+  socket = io("ws://127.0.0.1:5000");
   return new Promise((resolve, reject) => {
     socket.on("connect", () => {
       resolve("Connected");
@@ -24,8 +26,8 @@ function connectSocket() {
  *
  * @param {*} socket Instance of connected socket which will receive events
  */
-function initHandlers(socket) {
-  socket.on("greet", data => {
+function initHandlers() {
+  socket.on("greet", (data) => {
     outputMessage(data.data, false);
   });
 }
@@ -39,4 +41,9 @@ function outputMessage(msg, self) {
   messageWrapper.append(message);
 }
 
-export default connectSocket;
+function sendMessage(msg) {
+  socket.send(msg);
+  outputMessage(msg, true);
+}
+
+export { connectSocket, sendMessage };
