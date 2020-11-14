@@ -71,18 +71,32 @@ body {
   height: 90%;
   max-height: 90%;
   border-radius: 5px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
+  text-overflow: ellipsis;
   margin: 10px auto;
   border: 1px solid black;
 }
 
 .message {
-  min-height: 30px;
+  min-height: 50px;
+  width: 50%;
+  overflow: hidden;
   font-size: 0.75em;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  /* Align text */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  margin: 5px;
 }
 
 .message-self {
+  justify-content: flex-end;
   background-color: rgba(0, 0, 0, 0.15);
+  position: relative;
+  left: 50%;
+  margin-left: -15px;
 }

@@ -12,11 +12,9 @@ function connectSocket() {
     socket.on("connect", () => {
       resolve("Connected");
       initHandlers(socket);
-      socket.send("Hello!");
-      outputMessage("Hello!", true);
     });
     socket.on("error", () => {
-      reject("Error");
+      reject("Connection error");
     });
   });
 }
@@ -27,7 +25,10 @@ function connectSocket() {
  * @param {*} socket Instance of connected socket which will receive events
  */
 function initHandlers() {
-  socket.on("greet", (data) => {
+  socket.on("greet", data => {
+    outputMessage(data.data, false);
+  });
+  socket.on("chat-message", data => {
     outputMessage(data.data, false);
   });
 }
@@ -46,4 +47,4 @@ function sendMessage(msg) {
   outputMessage(msg, true);
 }
 
-export { connectSocket, sendMessage };
+export {connectSocket, sendMessage};
