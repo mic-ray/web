@@ -1,5 +1,6 @@
 # Import SocketIO instance and setup function
 from app import socketio, setup
+
 # Import socket events handler
 import socket_handler
 
@@ -11,5 +12,6 @@ app = setup()
 def home():
     return "Hi from Flask"
 
+
 if __name__ == "__main__":
-    socketio.run(app)
+    socketio.run(app, debug=True)

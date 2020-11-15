@@ -11,3 +11,4 @@ def handle_connect():
 @socketio.on("message")
 def handle_message(message):
     print("Received a Client message: " + message)
+    emit("chat-message", {"data": message}, broadcast=True, include_self=False)
