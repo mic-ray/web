@@ -1,0 +1,23 @@
+{
+  "name": "node-gateway",
+  "version": "1.0.0",
+  "description": "An API Gateway written in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/mic-ray/web"
+  },
+  "author": "mic-ray",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "fast-gateway": "^2.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
+}
