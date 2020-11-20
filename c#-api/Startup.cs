@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using c__api.Models;
+using HotChocolate.AspNetCore;
+using HotChocolate;
 
 namespace c__api
 {
@@ -21,6 +23,10 @@ namespace c__api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+            services.AddGraphQL(sp => SchemaBuilder.New()
+                .AddQueryType<Query>()
+                .AddServices(sp)
+                .Create());
             services.AddControllers();
         }
 
@@ -31,6 +37,7 @@ namespace c__api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseGraphQL();
 
             app.UseHttpsRedirection();
 
@@ -43,5 +50,10 @@ namespace c__api
                 endpoints.MapControllers();
             });
         }
+    }
+
+    public class Query
+    {
+        public TodoItem GetTodoItem() => new TodoItem();
     }
 }
