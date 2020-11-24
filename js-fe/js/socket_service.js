@@ -6,10 +6,11 @@
 
 var socket;
 
-function connectSocket() {
+function connectSocket(username) {
   socket = io("ws://127.0.0.1:5000");
   return new Promise((resolve, reject) => {
     socket.on("connect", () => {
+      socket.user = username;
       resolve("Connected");
       initHandlers(socket);
     });
@@ -38,7 +39,7 @@ function outputMessage(msg, self) {
   var message = document.createElement("div");
   message.classList.add("message");
   if (self) message.classList.add("message-self");
-  message.textContent = msg;
+  message.textContent = `${socket.user}: ${msg}`;
   messageWrapper.append(message);
 }
 
@@ -47,4 +48,4 @@ function sendMessage(msg) {
   outputMessage(msg, true);
 }
 
-export {connectSocket, sendMessage};
+export { connectSocket, sendMessage };

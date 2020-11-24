@@ -4,6 +4,7 @@ import sendMessageHandler from "./message_service.js";
 var connectBtn = document.getElementById("connect");
 var connectStatus = document.createElement("p");
 var sendMessage = document.getElementById("message-send");
+var usernameInput = document.getElementById("username-input");
 
 function connectHandler() {
   connectBtn.disabled = true;
@@ -13,13 +14,13 @@ function connectHandler() {
     connectBtn.after(connectStatus);
     connectStatus.hidden = false;
   }
-
-  connectSocket().then(
+  var username = usernameInput.value;
+  connectSocket(username).then(
     () => {
       document.getElementById("welcome").style.display = "none";
       document.getElementById("chat").style.display = "block";
     },
-    (err) => (connectStatus.textContent = err)
+    err => (connectStatus.textContent = err)
   );
 }
 

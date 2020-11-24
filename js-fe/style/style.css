@@ -38,6 +38,12 @@ body {
   display: block;
 }
 
+#username-input {
+  height: 30px;
+  font-family: inherit;
+  border-radius: 5px;
+}
+
 #chat {
   display: none;
   grid-template-columns: 1fr;
