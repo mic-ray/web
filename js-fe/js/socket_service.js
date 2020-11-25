@@ -4,6 +4,8 @@
  * @return {*} Promise, which resolves if connection was successful
  */
 
+import { displayMessage, displaySelfMessage } from "./display_service.js";
+
 var socket;
 
 function connectSocket(username) {
@@ -27,25 +29,19 @@ function connectSocket(username) {
  */
 function initHandlers() {
   socket.on("greet", data => {
-    outputMessage(data.data, false);
+    displayMessage({ user: "Server", msg: data.data });
   });
   socket.on("chat-message", data => {
-    outputMessage(data.data, false);
+    displayMessage(data.data);
   });
-}
-
-function outputMessage(msg, self) {
-  var messageWrapper = document.getElementById("message-wrapper");
-  var message = document.createElement("div");
-  message.classList.add("message");
-  if (self) message.classList.add("message-self");
-  message.textContent = `${socket.user}: ${msg}`;
-  messageWrapper.append(message);
 }
 
 function sendMessage(msg) {
-  socket.send(msg);
-  outputMessage(msg, true);
+  socket.send({
+    user: socket.user,
+    msg: msg
+  });
+  displaySelfMessage(msg, socket.user);
 }
 
 export { connectSocket, sendMessage };
