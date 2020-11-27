@@ -1,17 +1,19 @@
 var messageWrapper = document.getElementById("message-wrapper");
 
-function displaySelfMessage(msg, username) {
+function displayMessage(msgData, self = false) {
+  var messageContainer = document.createElement("div");
+  var username = document.createElement("div");
   var message = document.createElement("div");
-  message.classList.add("message", "message-self");
-  message.textContent = `${username}: ${msg}`;
-  messageWrapper.append(message);
+
+  messageContainer.classList.add("message");
+  if (self) messageContainer.classList.add("message-self");
+  username.classList.add("message-user");
+
+  username.textContent = msgData.user;
+  message.textContent = msgData.msg;
+
+  messageContainer.append(username, message);
+  messageWrapper.append(messageContainer);
 }
 
-function displayMessage(msgData) {
-  var message = document.createElement("div");
-  message.classList.add("message");
-  message.textContent = `${msgData.user}: ${msgData.msg}`;
-  messageWrapper.append(message);
-}
-
-export { displaySelfMessage, displayMessage };
+export { displayMessage };

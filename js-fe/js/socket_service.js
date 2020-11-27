@@ -4,7 +4,7 @@
  * @return {*} Promise, which resolves if connection was successful
  */
 
-import { displayMessage, displaySelfMessage } from "./display_service.js";
+import { displayMessage } from "./display_service.js";
 
 var socket;
 
@@ -41,7 +41,7 @@ function sendMessage(msg) {
     user: socket.user,
     msg: msg
   });
-  displaySelfMessage(msg, socket.user);
+  displayMessage({ user: socket.user, msg: msg }, true);
 }
 
 export { connectSocket, sendMessage };

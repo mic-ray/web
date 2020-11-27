@@ -91,18 +91,22 @@ body {
   font-size: 0.75em;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 5px;
-  /* Align text */
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
   padding: 5px;
   margin: 5px;
+  /* Align text */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .message-self {
-  justify-content: flex-end;
+  align-items: flex-end;
   background-color: rgba(0, 0, 0, 0.15);
   position: relative;
   left: 50%;
   margin-left: -15px;
+}
+
+.message-user {
+  font-size: 0.6em;
 }
