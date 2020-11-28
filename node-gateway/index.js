@@ -14,19 +14,24 @@ const server = gateway({
   middlewares: [require("cors")(), logger],
   routes: [
     {
-      prefix: "/auth",
+      prefix: "/api/auth",
       prefixRewrite: "/auth",
       target: "http://localhost:3030"
     },
     {
-      prefix: "/users",
+      prefix: "/api/users",
       prefixRewrite: "/users",
       target: "http://localhost:3030"
     },
     {
-      prefix: "/notes",
+      prefix: "/api/notes",
       prefixRewrite: "/notes",
       target: "http://localhost:3030"
+    },
+    {
+      prefix: "/graphql",
+      prefixRewrite: "/graphql",
+      target: "http://localhost:4000"
     }
   ]
 });
