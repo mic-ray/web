@@ -29,6 +29,20 @@ app.use("/users", usersRoutes);
 const { notesRoutes } = require("./routes/notes");
 app.use("/notes", notesRoutes);
 
+app.get("/health", (req, res, next) => {
+  const health = {
+    uptime: process.uptime(),
+    status: "UP",
+    databaseConnected: DBService.isConnected(),
+    timestamp: Date.now()
+  };
+  try {
+    res.status(200).json(health);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // If no route has matched
 app.use((req, res, next) => {
   next(new ApiError("Not found!", 404));

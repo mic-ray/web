@@ -18,6 +18,14 @@ exports.connect = () => {
 };
 
 /**
+ *
+ * @param {*} userData
+ */
+exports.isConnected = () => {
+  return mongoose.connection.readyState === 1;
+};
+
+/**
  * Creates a new User in the database
  * @param {*} userData Data (E-Mail, Username and Password) of the user to be added
  */
