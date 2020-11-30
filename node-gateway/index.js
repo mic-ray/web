@@ -29,8 +29,12 @@ const server = gateway({
       target: "http://localhost:3030"
     },
     {
-      prefix: "/graphql",
-      prefixRewrite: "/graphql",
+      prefix: "/api/health",
+      prefixRewrite: "/health",
+      target: "http://localhost:3030"
+    },
+    {
+      prefix: "/py",
       target: "http://localhost:4000"
     }
   ]
